@@ -28,4 +28,7 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+    //Add Library
+    compile 'com.google.android.gms:play-services:11.4.2'
 }

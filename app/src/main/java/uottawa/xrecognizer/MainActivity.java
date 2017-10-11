@@ -2,21 +2,31 @@ package uottawa.xrecognizer;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.face.Face;
+import com.google.android.gms.vision.face.FaceDetector;
+import com.google.android.gms.vision.face.Landmark;
 
 public class MainActivity extends AppCompatActivity {
 
     ImageView imageView = null;
+    Canvas canvas = null;
+    Paint paint = new Paint();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +60,72 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
         Bitmap bitmap = (Bitmap)data.getExtras().get("data");
+        Bitmap tmpBitmap = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(),Bitmap.Config.RGB_565);
+        canvas = new Canvas(bitmap);
+        canvas.drawBitmap(bitmap,0,0,null);
+
+        FaceDetector faceDetector = new FaceDetector.Builder(getApplicationContext())
+                                                    .setTrackingEnabled(false)
+                                                    .setLandmarkType(FaceDetector.ALL_LANDMARKS)
+                                                    .setMode(FaceDetector.ACCURATE_MODE)
+                                                    .build();
+        if(!faceDetector.isOperational()){
+            Toast.makeText(MainActivity.this,"Wrong!",Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+        SparseArray<Face> sparseArray = faceDetector.detect(frame);
+
+        for(int i = 0; i < sparseArray.size(); i++){
+            Face face = sparseArray.valueAt(i);
+            detectLandmarks(face);
+            drawRecOnFaceView(face);
+        }
+
         imageView.setImageBitmap(bitmap);
+        Toast.makeText(MainActivity.this,"test!!!!",Toast.LENGTH_LONG).show();
+    }
+
+    private void detectLandmarks(Face face) {
+        paint.setColor(Color.RED);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(2);
+        for(Landmark landmark : face.getLandmarks()){
+            int cx = (int)(landmark.getPosition().x);
+            int cy = (int)(landmark.getPosition().y);
+            switch(landmark.getType()){
+                case Landmark.BOTTOM_MOUTH:
+                    canvas.drawCircle(cx,cy,1,paint);
+                    break;
+                case Landmark.LEFT_EYE:
+                    canvas.drawCircle(cx,cy,1,paint);
+                    break;
+                case Landmark.RIGHT_EYE:
+                    canvas.drawCircle(cx,cy,1,paint);
+                    break;
+                case Landmark.NOSE_BASE:
+                    canvas.drawCircle(cx,cy,1,paint);
+                    break;
+                case Landmark.LEFT_MOUTH:
+                    canvas.drawCircle(cx,cy,1,paint);
+                    break;
+                case Landmark.RIGHT_MOUTH:
+                    canvas.drawCircle(cx,cy,1,paint);
+                    break;
+            }
+        }
+    }
+
+    private void drawRecOnFaceView(Face face) {
+        paint.setColor(Color.GREEN);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(2);
+        float left = (float)(face.getPosition().x);
+        float top = (float)(face.getPosition().y);
+        float right = (float)(left + face.getWidth());
+        float bottom = (float)(top + face.getHeight());
+        canvas.drawRect(left,top,right,bottom,paint);
     }
 
     @Override
