@@ -16,13 +16,42 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <Button
-        android:id="@+id/btnCamera"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/holo_red_light"
-        android:text="Who am I ?"
-        android:textColor="@android:color/white" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="70dp"
+        android:layout_weight="4"
+        android:orientation="horizontal"
+        android:layout_margin="0dp" >
+
+        <Button
+            android:id="@+id/btnNewFace"
+            android:layout_width="500px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/holo_green_dark"
+            android:text="I am new !"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btnIdentify"
+            android:layout_width="500px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/holo_red_light"
+            android:text="Who am I ?"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btnListFace"
+            android:layout_width="500px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/holo_purple"
+            android:text="Manage"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
 
 </LinearLayout>
+
+
