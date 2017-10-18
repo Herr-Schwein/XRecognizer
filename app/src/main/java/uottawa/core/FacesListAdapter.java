@@ -43,6 +43,7 @@ public class FacesListAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         TextView mTextView = new TextView(mContext);
         mTextView.setText(facesList.get(i).getName());
+        mTextView.setTextSize(15);
         return mTextView;
     }
 }

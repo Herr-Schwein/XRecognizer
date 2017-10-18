@@ -26,6 +26,7 @@ import com.google.android.gms.vision.face.Landmark;
 import java.util.ArrayList;
 
 import uottawa.commonBean.Faces;
+import uottawa.core.CreateUserDialog;
 import uottawa.core.FacesDB;
 import uottawa.core.FacesListAdapter;
 
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     Canvas canvas = null;
     Paint paint = new Paint();
     FacesDB facesDB = null;
+    CreateUserDialog createUserDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +97,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             //new face
             case 1:
-                recordNewFaceAction(data);
+                ArrayList<Faces> facesRecords = recordNewFaceAction(data);
+                addUserName(facesRecords);
         }
 
         Toast.makeText(MainActivity.this,"test!!!!",Toast.LENGTH_LONG).show();
@@ -130,9 +133,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void recordNewFaceAction(Intent data) {
+    private ArrayList<Faces> recordNewFaceAction(Intent data) {
+        ArrayList<Faces> facesList = new ArrayList<>();
         Bitmap bitmap = (Bitmap)data.getExtras().get("data");
-        Bitmap tmpBitmap = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(),Bitmap.Config.RGB_565);
+        final Bitmap tmpBitmap = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(),Bitmap.Config.RGB_565);
         canvas = new Canvas(bitmap);
         canvas.drawBitmap(bitmap,0,0,null);
 
@@ -143,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         if(!faceDetector.isOperational()){
             Toast.makeText(MainActivity.this,"Wrong!",Toast.LENGTH_LONG).show();
-            return;
+            return facesList;
         }
 
         Frame frame = new Frame.Builder().setBitmap(bitmap).build();
@@ -152,11 +156,12 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 0; i < sparseArray.size(); i++){
             Face face = sparseArray.valueAt(i);
             Faces faces = detectLandmarks(face);
+            facesList.add(faces);
             drawRecOnFaceView(face);
-            facesDB.insert(faces);
         }
 
         imageView.setImageBitmap(bitmap);
+        return facesList;
     }
 
     @Override
@@ -179,6 +184,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void addUserName(ArrayList<Faces> facesRecords){
+        for(final Faces faces : facesRecords) {
+            createUserDialog = new CreateUserDialog(this, new View.OnClickListener() {
+                public String userName = "";
+                @Override
+                public void onClick(View view) {
+                    if (view.getId() == R.id.bnt_create_user) {
+                        userName = createUserDialog.getTextName().getText().toString().trim();
+                    }
+                    faces.setName(userName);
+                    facesDB.insert(faces);
+                    createUserDialog.dismiss();
+                    Toast.makeText(MainActivity.this, "Add user " + faces.getName() + " success!", Toast.LENGTH_LONG).show();
+                }
+            });
+            createUserDialog.show();
+        }
     }
 
     private Faces detectLandmarks(Face face) {
@@ -236,14 +260,11 @@ public class MainActivity extends AppCompatActivity {
         canvas.drawRect(left,top,right,bottom,paint);
     }
 
-
     public void updatelistview(ArrayList<Faces> facesRecords) {
-//        ListView lv = (ListView) findViewById(R.id.bntfacelistview);
-//        FacesListAdapter facesListAdapter = new FacesListAdapter(getApplicationContext(),facesRecords);
-//        lv.setAdapter(facesListAdapter);
         FacesListAdapter facesListAdapter = new FacesListAdapter(getApplicationContext(),facesRecords);
         ListView listView = new ListView(this);
         listView.setAdapter(facesListAdapter);
         setContentView(listView);
     }
+
 }
