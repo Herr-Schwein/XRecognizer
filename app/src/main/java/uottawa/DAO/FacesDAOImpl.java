@@ -52,6 +52,7 @@ public class FacesDAOImpl implements IFacesDAO {
 
         String state = "SELECT * FROM " + TABLE_NAME;
         Cursor cursor = db.rawQuery(state,null);
+        cursor.moveToNext();
         while(!cursor.isAfterLast()){
             Faces faces = new Faces();
             faces.setId(cursor.getInt(cursor.getColumnIndex("id")));
@@ -69,6 +70,7 @@ public class FacesDAOImpl implements IFacesDAO {
             faces.setRightMouthX(cursor.getFloat(cursor.getColumnIndex("rightMouthX")));
             faces.setRightMouthY(cursor.getFloat(cursor.getColumnIndex("rightMouthY")));
             facesList.add(faces);
+            cursor.moveToNext();
         }
         return facesList;
     }

@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView imageView = null;
     Canvas canvas = null;
     Paint paint = new Paint();
-    FacesDB facesDB = new FacesDB(getApplicationContext());
+    FacesDB facesDB = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         Button btnNewFace = (Button)findViewById(R.id.btnNewFace);
         Button btnListFace = (Button)findViewById(R.id.btnListFace);
         imageView = (ImageView)findViewById(R.id.imageView);
+        facesDB = new FacesDB(getApplicationContext());
 
         btnIdentify.setOnClickListener(new View.OnClickListener(){
             @Override
