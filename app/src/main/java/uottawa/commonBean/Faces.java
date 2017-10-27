@@ -1,5 +1,7 @@
 package uottawa.commonBean;
 
+import java.math.BigDecimal;
+
 /**
  * Created by dunhaozhong on 10/11/17.
  */
@@ -7,25 +9,102 @@ package uottawa.commonBean;
 public class Faces {
     private int id;
     private String name;
-    private float leftEyeX;
-    private float leftEyeY;
-    private float rightEyeX;
-    private float rightEyeY;
-    private float noseX;
-    private float noseY;
-    private float leftMouthX;
-    private float leftMouthY;
-    private float rightMouthX;
-    private float rightMouthY;
-    private float bottomMouthX;
-    private float bottomMouthY;
+    private double leftEyeX = 0;
+    private double leftEyeY = 0;
+    private double rightEyeX = 0;
+    private double rightEyeY = 0;
+    private double noseX = 0;
+    private double noseY = 0;
+    private double leftMouthX = 0;
+    private double leftMouthY = 0;
+    private double rightMouthX = 0;
+    private double rightMouthY = 0;
+    private double bottomMouthX = 0;
+    private double bottomMouthY = 0;
+    private BigDecimal ratioLeftEyesAndNose = new BigDecimal(0).setScale(4,BigDecimal.ROUND_HALF_UP);
+    private BigDecimal ratioRightEyesAndNose = new BigDecimal(0).setScale(4,BigDecimal.ROUND_HALF_UP);
+    private BigDecimal ratioLeftEyesBottomMouth = new BigDecimal(0).setScale(4,BigDecimal.ROUND_HALF_UP);
+    private BigDecimal ratioRightEyesBottomMouth = new BigDecimal(0).setScale(4,BigDecimal.ROUND_HALF_UP);
+    private BigDecimal ratioEyesAndNoseMouth = new BigDecimal(0).setScale(4,BigDecimal.ROUND_HALF_UP);
 
-    public String getName() {
-        return name;
+    /**
+     * result = distance of eyes / distance of left eye to nose
+     * @return
+     */
+    public void calRatioLeftEyesAndNose() {
+        BigDecimal disEyes = new BigDecimal(Math.sqrt(Math.pow(rightEyeX - leftEyeX, 2) + Math.pow(rightEyeY - rightEyeY, 2)))
+                .setScale(4,BigDecimal.ROUND_HALF_UP);
+        BigDecimal disLeftEyeNose = new BigDecimal(Math.sqrt(Math.pow(leftEyeX - noseX, 2) + Math.pow(leftEyeY - noseY, 2)))
+                .setScale(4,BigDecimal.ROUND_HALF_UP);
+        if (disLeftEyeNose.equals(0)) {
+            ratioLeftEyesAndNose = BigDecimal.valueOf(-1);
+        } else {
+            ratioLeftEyesAndNose = disEyes.divide(disLeftEyeNose,4, BigDecimal.ROUND_HALF_UP);
+        }
     }
 
-    public void setName(String name) {
-        this.name = name;
+    /**
+     * result = distance of eyes / distance of right eye to nose
+     * @return
+     */
+    public void calRatioRightEyesAndNose(){
+        BigDecimal disEyes = new BigDecimal(Math.sqrt( Math.pow(rightEyeX - leftEyeX, 2) + Math.pow(rightEyeY - rightEyeY, 2) ))
+                .setScale(4,BigDecimal.ROUND_HALF_UP);
+        BigDecimal disRightEyeNose = new BigDecimal(Math.sqrt( Math.pow(rightEyeX - noseX, 2) + Math.pow(rightEyeY - noseY, 2)))
+                .setScale(4,BigDecimal.ROUND_HALF_UP);
+        if(disRightEyeNose.equals(0)){
+            ratioRightEyesAndNose = BigDecimal.valueOf(-1);
+        } else {
+            ratioRightEyesAndNose = disEyes.divide(disRightEyeNose,4, BigDecimal.ROUND_HALF_UP);
+        }
+    }
+
+    /**
+     * result = distance of eyes / distance of left eye to BottomMouth
+     * @return
+     */
+    public void calRatioLeftEyesBottomMouth(){
+        BigDecimal disEyes = new BigDecimal(Math.sqrt( Math.pow(rightEyeX - leftEyeX, 2) + Math.pow(rightEyeY - rightEyeY, 2) ))
+                .setScale(4,BigDecimal.ROUND_HALF_UP);
+        BigDecimal disLeftEyeBottomMouth = new BigDecimal(Math.sqrt( Math.pow(leftEyeX - bottomMouthX, 2) + Math.pow(leftEyeY - bottomMouthY, 2)))
+                .setScale(4,BigDecimal.ROUND_HALF_UP);
+        if(disLeftEyeBottomMouth.equals(0)){
+            ratioLeftEyesBottomMouth = BigDecimal.valueOf(-1);
+        } else {
+            ratioLeftEyesBottomMouth = disEyes.divide(disLeftEyeBottomMouth,4, BigDecimal.ROUND_HALF_UP);
+        }
+    }
+
+    /**
+     * result = distance of eyes / distance of left eye to nose
+     * @return
+     */
+    public void calRatioRightEyesBottomMouth(){
+        BigDecimal disEyes = new BigDecimal(Math.sqrt( Math.pow(rightEyeX - leftEyeX, 2) + Math.pow(rightEyeY - rightEyeY, 2) ))
+                .setScale(4,BigDecimal.ROUND_HALF_UP);
+        BigDecimal disLeftEyeNose = new BigDecimal(Math.sqrt( Math.pow(leftEyeX - bottomMouthX, 2) + Math.pow(leftEyeY - bottomMouthY, 2)))
+                .setScale(4,BigDecimal.ROUND_HALF_UP);
+        if(disLeftEyeNose.equals(0)){
+            ratioRightEyesBottomMouth = BigDecimal.valueOf(-1);
+        } else {
+            ratioRightEyesBottomMouth = disEyes.divide(disLeftEyeNose,4, BigDecimal.ROUND_HALF_UP);
+        }
+    }
+
+    /**
+     * result = distance of eyes / distance of bottom mouth to nose
+     * @return
+     */
+    public void calRatioEyesAndNoseBottomMouth(){
+        BigDecimal disEyes = new BigDecimal(Math.sqrt( Math.pow(rightEyeX - leftEyeX, 2) + Math.pow(rightEyeY - rightEyeY, 2) ))
+                .setScale(4,BigDecimal.ROUND_HALF_UP);
+        BigDecimal disNoseMouth = new BigDecimal(Math.sqrt( Math.pow(noseX - bottomMouthX, 2) + Math.pow(noseY - bottomMouthY, 2)))
+                .setScale(4,BigDecimal.ROUND_HALF_UP);
+        if(disNoseMouth.equals(0)){
+            ratioEyesAndNoseMouth = BigDecimal.valueOf(-1);
+        } else {
+            ratioEyesAndNoseMouth = disEyes.divide(disNoseMouth,4, BigDecimal.ROUND_HALF_UP);
+        }
     }
 
     public int getId() {
@@ -36,99 +115,147 @@ public class Faces {
         this.id = id;
     }
 
-    public float getLeftEyeX() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getLeftEyeX() {
         return leftEyeX;
     }
 
-    public void setLeftEyeX(float leftEyeX) {
+    public void setLeftEyeX(double leftEyeX) {
         this.leftEyeX = leftEyeX;
     }
 
-    public float getLeftEyeY() {
+    public double getLeftEyeY() {
         return leftEyeY;
     }
 
-    public void setLeftEyeY(float leftEyeY) {
+    public void setLeftEyeY(double leftEyeY) {
         this.leftEyeY = leftEyeY;
     }
 
-    public float getRightEyeX() {
+    public double getRightEyeX() {
         return rightEyeX;
     }
 
-    public void setRightEyeX(float rightEyeX) {
+    public void setRightEyeX(double rightEyeX) {
         this.rightEyeX = rightEyeX;
     }
 
-    public float getRightEyeY() {
+    public double getRightEyeY() {
         return rightEyeY;
     }
 
-    public void setRightEyeY(float rightEyeY) {
+    public void setRightEyeY(double rightEyeY) {
         this.rightEyeY = rightEyeY;
     }
 
-    public float getNoseX() {
+    public double getNoseX() {
         return noseX;
     }
 
-    public void setNoseX(float noseX) {
+    public void setNoseX(double noseX) {
         this.noseX = noseX;
     }
 
-    public float getNoseY() {
+    public double getNoseY() {
         return noseY;
     }
 
-    public void setNoseY(float noseY) {
+    public void setNoseY(double noseY) {
         this.noseY = noseY;
     }
 
-    public float getLeftMouthX() {
+    public double getLeftMouthX() {
         return leftMouthX;
     }
 
-    public void setLeftMouthX(float leftMouthX) {
+    public void setLeftMouthX(double leftMouthX) {
         this.leftMouthX = leftMouthX;
     }
 
-    public float getLeftMouthY() {
+    public double getLeftMouthY() {
         return leftMouthY;
     }
 
-    public void setLeftMouthY(float leftMouthY) {
+    public void setLeftMouthY(double leftMouthY) {
         this.leftMouthY = leftMouthY;
     }
 
-    public float getRightMouthX() {
+    public double getRightMouthX() {
         return rightMouthX;
     }
 
-    public void setRightMouthX(float rightMouthX) {
+    public void setRightMouthX(double rightMouthX) {
         this.rightMouthX = rightMouthX;
     }
 
-    public float getRightMouthY() {
+    public double getRightMouthY() {
         return rightMouthY;
     }
 
-    public void setRightMouthY(float rightMouthY) {
+    public void setRightMouthY(double rightMouthY) {
         this.rightMouthY = rightMouthY;
     }
 
-    public float getBottomMouthX() {
+    public double getBottomMouthX() {
         return bottomMouthX;
     }
 
-    public void setBottomMouthX(float bottomMouthX) {
+    public void setBottomMouthX(double bottomMouthX) {
         this.bottomMouthX = bottomMouthX;
     }
 
-    public float getBottomMouthY() {
+    public double getBottomMouthY() {
         return bottomMouthY;
     }
 
-    public void setBottomMouthY(float bottomMouthY) {
+    public void setBottomMouthY(double bottomMouthY) {
         this.bottomMouthY = bottomMouthY;
+    }
+
+    public BigDecimal getRatioLeftEyesAndNose() {
+        return ratioLeftEyesAndNose;
+    }
+
+    public void setRatioLeftEyesAndNose(BigDecimal ratioLeftEyesAndNose) {
+        this.ratioLeftEyesAndNose = ratioLeftEyesAndNose;
+    }
+
+    public BigDecimal getRatioRightEyesAndNose() {
+        return ratioRightEyesAndNose;
+    }
+
+    public void setRatioRightEyesAndNose(BigDecimal ratioRightEyesAndNose) {
+        this.ratioRightEyesAndNose = ratioRightEyesAndNose;
+    }
+
+    public BigDecimal getRatioLeftEyesBottomMouth() {
+        return ratioLeftEyesBottomMouth;
+    }
+
+    public void setRatioLeftEyesBottomMouth(BigDecimal ratioLeftEyesBottomMouth) {
+        this.ratioLeftEyesBottomMouth = ratioLeftEyesBottomMouth;
+    }
+
+    public BigDecimal getRatioRightEyesBottomMouth() {
+        return ratioRightEyesBottomMouth;
+    }
+
+    public void setRatioRightEyesBottomMouth(BigDecimal ratioRightEyesBottomMouth) {
+        this.ratioRightEyesBottomMouth = ratioRightEyesBottomMouth;
+    }
+
+    public BigDecimal getRatioEyesAndNoseMouth() {
+        return ratioEyesAndNoseMouth;
+    }
+
+    public void setRatioEyesAndNoseMouth(BigDecimal ratioEyesAndNoseMouth) {
+        this.ratioEyesAndNoseMouth = ratioEyesAndNoseMouth;
     }
 }

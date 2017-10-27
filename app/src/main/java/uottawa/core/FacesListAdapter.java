@@ -42,8 +42,15 @@ public class FacesListAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         TextView mTextView = new TextView(mContext);
-        mTextView.setText(facesList.get(i).getName());
-        mTextView.setTextSize(15);
+        StringBuilder sb = new StringBuilder();
+        sb.append(facesList.get(i).getName()).append(",");
+        sb.append(facesList.get(i).getRatioEyesAndNoseMouth()).append(",");
+        sb.append(facesList.get(i).getRatioLeftEyesAndNose()).append(",");
+        sb.append(facesList.get(i).getRatioLeftEyesBottomMouth()).append(",");
+        sb.append(facesList.get(i).getRatioRightEyesAndNose()).append(",");
+        sb.append(facesList.get(i).getRatioRightEyesBottomMouth());
+        mTextView.setText(sb.toString());
+        mTextView.setTextSize(18);
         return mTextView;
     }
 }

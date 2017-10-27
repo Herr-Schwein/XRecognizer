@@ -29,6 +29,7 @@ import uottawa.commonBean.Faces;
 import uottawa.core.CreateUserDialog;
 import uottawa.core.FacesDB;
 import uottawa.core.FacesListAdapter;
+import uottawa.core.KNN.AbstractXRKNN;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -122,11 +123,13 @@ public class MainActivity extends AppCompatActivity {
 
         Frame frame = new Frame.Builder().setBitmap(bitmap).build();
         SparseArray<Face> sparseArray = faceDetector.detect(frame);
+        ArrayList<Faces> facesRecords = facesDB.selectAll();
 
         for(int i = 0; i < sparseArray.size(); i++){
             Face face = sparseArray.valueAt(i);
-            detectLandmarks(face);
-            drawRecOnFaceView(face);
+            Faces faces = detectLandmarks(face);
+            String name = AbstractXRKNN.calNearestFaces(1, faces, facesRecords);
+            drawRecOnFaceView(face, name);
         }
 
         imageView.setImageBitmap(bitmap);
@@ -157,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
             Face face = sparseArray.valueAt(i);
             Faces faces = detectLandmarks(face);
             facesList.add(faces);
-            drawRecOnFaceView(face);
+            drawRecOnFaceView(face, "");
         }
 
         imageView.setImageBitmap(bitmap);
@@ -246,10 +249,15 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
+        faces.calRatioEyesAndNoseBottomMouth();
+        faces.calRatioLeftEyesAndNose();
+        faces.calRatioRightEyesAndNose();
+        faces.calRatioRightEyesBottomMouth();
+        faces.calRatioLeftEyesBottomMouth();
         return faces;
     }
 
-    private void drawRecOnFaceView(Face face) {
+    private void drawRecOnFaceView(Face face, String name) {
         paint.setColor(Color.GREEN);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(2);
@@ -258,6 +266,9 @@ public class MainActivity extends AppCompatActivity {
         float right = (float)(left + face.getWidth());
         float bottom = (float)(top + face.getHeight());
         canvas.drawRect(left,top,right,bottom,paint);
+        paint.setColor(Color.BLUE);
+        paint.setTextSize(18);
+        canvas.drawText(name,right/2 - name.length(),bottom,paint);
     }
 
     public void updatelistview(ArrayList<Faces> facesRecords) {

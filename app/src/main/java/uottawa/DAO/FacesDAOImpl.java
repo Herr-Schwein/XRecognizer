@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -21,6 +22,11 @@ public class FacesDAOImpl implements IFacesDAO {
         String uuid = UUID.randomUUID().toString();
         cv.put("id", uuid);
         cv.put("name", faces.getName());
+        cv.put("ratioLeftEyesAndNose", faces.getRatioLeftEyesAndNose().toString());
+        cv.put("ratioRightEyesAndNose", faces.getRatioRightEyesAndNose().toString());
+        cv.put("ratioLeftEyesBottomMouth", faces.getRatioLeftEyesBottomMouth().toString());
+        cv.put("ratioRightEyesBottomMouth", faces.getRatioRightEyesBottomMouth().toString());
+        cv.put("ratioEyesAndNoseMouth", faces.getRatioEyesAndNoseMouth().toString());
         cv.put("leftEyeX", faces.getLeftEyeX());
         cv.put("leftEyeY", faces.getLeftEyeX());
         cv.put("rightEyeX", faces.getRightEyeX());
@@ -57,6 +63,11 @@ public class FacesDAOImpl implements IFacesDAO {
             Faces faces = new Faces();
             faces.setId(cursor.getInt(cursor.getColumnIndex("id")));
             faces.setName(cursor.getString(cursor.getColumnIndex("name")));
+            faces.setRatioEyesAndNoseMouth(new BigDecimal(cursor.getString(cursor.getColumnIndex("ratioEyesAndNoseMouth"))));
+            faces.setRatioLeftEyesAndNose(new BigDecimal(cursor.getString(cursor.getColumnIndex("ratioLeftEyesAndNose"))));
+            faces.setRatioRightEyesAndNose(new BigDecimal(cursor.getString(cursor.getColumnIndex("ratioRightEyesAndNose"))));
+            faces.setRatioLeftEyesBottomMouth(new BigDecimal(cursor.getString(cursor.getColumnIndex("ratioLeftEyesBottomMouth"))));
+            faces.setRatioRightEyesBottomMouth(new BigDecimal(cursor.getString(cursor.getColumnIndex("ratioRightEyesBottomMouth"))));
             faces.setLeftEyeY(cursor.getFloat(cursor.getColumnIndex("leftEyeX")));
             faces.setLeftEyeY(cursor.getFloat(cursor.getColumnIndex("leftEyeY")));
             faces.setRightEyeX(cursor.getFloat(cursor.getColumnIndex("rightEyeX")));
