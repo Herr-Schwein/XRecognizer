@@ -30,7 +30,6 @@ import uottawa.core.CreateUserDialog;
 import uottawa.core.FacesDB;
 import uottawa.core.FacesListAdapter;
 import uottawa.core.KNN.AbstractXRKNN;
-import uottawa.core.KNN.XRKnnEuler;
 import uottawa.core.KNN.XRKnnGeometry;
 
 public class MainActivity extends AppCompatActivity {

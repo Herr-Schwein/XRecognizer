@@ -1,7 +1,6 @@
 package uottawa.commonBean;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
 /**
  * Created by dunhaozhong on 10/11/17.
