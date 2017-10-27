@@ -30,6 +30,8 @@ import uottawa.core.CreateUserDialog;
 import uottawa.core.FacesDB;
 import uottawa.core.FacesListAdapter;
 import uottawa.core.KNN.AbstractXRKNN;
+import uottawa.core.KNN.XRKnnEuler;
+import uottawa.core.KNN.XRKnnGeometry;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     Paint paint = new Paint();
     FacesDB facesDB = null;
     CreateUserDialog createUserDialog = null;
+    AbstractXRKNN xRKnn = new XRKnnGeometry();
+//    AbstractXRKNN xRKnn = new XRKnnEuler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 0; i < sparseArray.size(); i++){
             Face face = sparseArray.valueAt(i);
             Faces faces = detectLandmarks(face);
-            String name = AbstractXRKNN.calNearestFaces(1, faces, facesRecords);
+            String name = xRKnn.calNearestFaces(1, faces, facesRecords);
             drawRecOnFaceView(face, name);
         }
 
