@@ -21,11 +21,11 @@ public abstract class AbstractXRKNN {
      * @param recordFaces
      * @return
      */
-    public static String calNearestFaces(int k, Faces target, ArrayList<Faces> recordFaces){
+    public String calNearestFaces(int k, Faces target, ArrayList<Faces> recordFaces){
         BigDecimal result = new BigDecimal(Double.MAX_VALUE).setScale(4,BigDecimal.ROUND_HALF_UP);
         String resName = target.getName();
         for(Faces faces : recordFaces){
-            BigDecimal dis = calEuclideanDisOfFaces(target, faces);
+            BigDecimal dis = calDistanceOfFaces(target, faces);
             if(dis.compareTo(result) < 0) {
                 result = dis;
                 resName = faces.getName();
@@ -34,15 +34,23 @@ public abstract class AbstractXRKNN {
         return resName;
     }
 
-    private static BigDecimal calEuclideanDisOfFaces(Faces faces1, Faces faces2){
+    /**
+     * Calculate Eulerian distance
+     * @param faces1
+     * @param faces2
+     * @return
+     */
+    abstract protected BigDecimal calDistanceOfFaces(Faces faces1, Faces faces2);
+
+    protected BigDecimal calRatio(BigDecimal dis1, BigDecimal dis2){
+        return dis1.divide(dis2,4,BigDecimal.ROUND_HALF_UP);
+    }
+
+    protected BigDecimal calDistance(double x1, double y1, double x2, double y2){
         return BigDecimal.valueOf(
                 Math.sqrt(
-                        Math.pow(faces1.getRatioEyesAndNoseMouth().doubleValue() - faces2.getRatioEyesAndNoseMouth().doubleValue(), 2)
-                                + Math.pow(faces1.getRatioLeftEyesAndNose().doubleValue() - faces2.getRatioLeftEyesAndNose().doubleValue(), 2)
-                                + Math.pow(faces1.getRatioLeftEyesBottomMouth().doubleValue() - faces2.getRatioLeftEyesBottomMouth().doubleValue(), 2)
-                                + Math.pow(faces1.getRatioRightEyesAndNose().doubleValue() - faces2.getRatioRightEyesAndNose().doubleValue(), 2)
-                                + Math.pow(faces1.getRatioRightEyesBottomMouth().doubleValue() - faces2.getRatioRightEyesBottomMouth().doubleValue(), 2)
+                        Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2)
                 )
-        ).setScale(4,BigDecimal.ROUND_HALF_UP);
+        ).setScale(4, BigDecimal.ROUND_HALF_UP);
     }
 }
