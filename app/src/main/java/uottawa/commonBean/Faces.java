@@ -1,6 +1,7 @@
 package uottawa.commonBean;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 /**
  * Created by dunhaozhong on 10/11/17.
@@ -105,6 +106,28 @@ public class Faces {
         } else {
             ratioEyesAndNoseMouth = disEyes.divide(disNoseMouth,4, BigDecimal.ROUND_HALF_UP);
         }
+    }
+
+    public Double[] get_X_Values(){
+        Double[] res = new Double[6];
+        res[0] = leftEyeX;
+        res[1] = rightEyeX;
+        res[2] = noseX;
+        res[3] = leftMouthX;
+        res[4] = rightMouthX;
+        res[5] = bottomMouthX;
+        return res;
+    }
+
+    public Double[] get_Y_Values(){
+        Double[] res = new Double[6];
+        res[0] = leftEyeY;
+        res[1] = rightEyeY;
+        res[2] = noseY;
+        res[3] = leftMouthY;
+        res[4] = rightMouthY;
+        res[5] = bottomMouthY;
+        return res;
     }
 
     public int getId() {
