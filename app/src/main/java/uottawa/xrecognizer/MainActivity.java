@@ -26,15 +26,21 @@ import com.google.android.gms.vision.face.Landmark;
 import java.util.ArrayList;
 
 import uottawa.commonBean.Faces;
+import uottawa.core.CreateUserDialog;
 import uottawa.core.FacesDB;
 import uottawa.core.FacesListAdapter;
+import uottawa.core.KNN.AbstractXRKNN;
+import uottawa.core.KNN.XRKnnGeometry;
 
 public class MainActivity extends AppCompatActivity {
 
     ImageView imageView = null;
     Canvas canvas = null;
     Paint paint = new Paint();
-    FacesDB facesDB = new FacesDB(getApplicationContext());
+    FacesDB facesDB = null;
+    CreateUserDialog createUserDialog = null;
+    AbstractXRKNN xRKnn = new XRKnnGeometry();
+//    AbstractXRKNN xRKnn = new XRKnnEuler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         Button btnNewFace = (Button)findViewById(R.id.btnNewFace);
         Button btnListFace = (Button)findViewById(R.id.btnListFace);
         imageView = (ImageView)findViewById(R.id.imageView);
+        facesDB = new FacesDB(getApplicationContext());
 
         btnIdentify.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -94,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             //new face
             case 1:
-                recordNewFaceAction(data);
+                ArrayList<Faces> facesRecords = recordNewFaceAction(data);
+                addUserName(facesRecords);
         }
 
         Toast.makeText(MainActivity.this,"test!!!!",Toast.LENGTH_LONG).show();
@@ -118,20 +126,23 @@ public class MainActivity extends AppCompatActivity {
 
         Frame frame = new Frame.Builder().setBitmap(bitmap).build();
         SparseArray<Face> sparseArray = faceDetector.detect(frame);
+        ArrayList<Faces> facesRecords = facesDB.selectAll();
 
         for(int i = 0; i < sparseArray.size(); i++){
             Face face = sparseArray.valueAt(i);
-            detectLandmarks(face);
-            drawRecOnFaceView(face);
+            Faces faces = detectLandmarks(face);
+            String name = xRKnn.calNearestFaces(1, faces, facesRecords);
+            drawRecOnFaceView(face, name);
         }
 
         imageView.setImageBitmap(bitmap);
 
     }
 
-    private void recordNewFaceAction(Intent data) {
+    private ArrayList<Faces> recordNewFaceAction(Intent data) {
+        ArrayList<Faces> facesList = new ArrayList<>();
         Bitmap bitmap = (Bitmap)data.getExtras().get("data");
-        Bitmap tmpBitmap = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(),Bitmap.Config.RGB_565);
+        final Bitmap tmpBitmap = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(),Bitmap.Config.RGB_565);
         canvas = new Canvas(bitmap);
         canvas.drawBitmap(bitmap,0,0,null);
 
@@ -142,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         if(!faceDetector.isOperational()){
             Toast.makeText(MainActivity.this,"Wrong!",Toast.LENGTH_LONG).show();
-            return;
+            return facesList;
         }
 
         Frame frame = new Frame.Builder().setBitmap(bitmap).build();
@@ -151,11 +162,12 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 0; i < sparseArray.size(); i++){
             Face face = sparseArray.valueAt(i);
             Faces faces = detectLandmarks(face);
-            drawRecOnFaceView(face);
-            facesDB.insert(faces);
+            facesList.add(faces);
+            drawRecOnFaceView(face, "");
         }
 
         imageView.setImageBitmap(bitmap);
+        return facesList;
     }
 
     @Override
@@ -178,6 +190,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void addUserName(ArrayList<Faces> facesRecords){
+        for(final Faces faces : facesRecords) {
+            createUserDialog = new CreateUserDialog(this, new View.OnClickListener() {
+                public String userName = "";
+                @Override
+                public void onClick(View view) {
+                    if (view.getId() == R.id.bnt_create_user) {
+                        userName = createUserDialog.getTextName().getText().toString().trim();
+                    }
+                    faces.setName(userName);
+                    facesDB.insert(faces);
+                    createUserDialog.dismiss();
+                    Toast.makeText(MainActivity.this, "Add user " + faces.getName() + " success!", Toast.LENGTH_LONG).show();
+                }
+            });
+            createUserDialog.show();
+        }
     }
 
     private Faces detectLandmarks(Face face) {
@@ -221,10 +252,15 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
+        faces.calRatioEyesAndNoseBottomMouth();
+        faces.calRatioLeftEyesAndNose();
+        faces.calRatioRightEyesAndNose();
+        faces.calRatioRightEyesBottomMouth();
+        faces.calRatioLeftEyesBottomMouth();
         return faces;
     }
 
-    private void drawRecOnFaceView(Face face) {
+    private void drawRecOnFaceView(Face face, String name) {
         paint.setColor(Color.GREEN);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(2);
@@ -233,16 +269,16 @@ public class MainActivity extends AppCompatActivity {
         float right = (float)(left + face.getWidth());
         float bottom = (float)(top + face.getHeight());
         canvas.drawRect(left,top,right,bottom,paint);
+        paint.setColor(Color.BLUE);
+        paint.setTextSize(18);
+        canvas.drawText(name,right/2 - name.length(),bottom,paint);
     }
 
-
     public void updatelistview(ArrayList<Faces> facesRecords) {
-//        ListView lv = (ListView) findViewById(R.id.bntfacelistview);
-//        FacesListAdapter facesListAdapter = new FacesListAdapter(getApplicationContext(),facesRecords);
-//        lv.setAdapter(facesListAdapter);
         FacesListAdapter facesListAdapter = new FacesListAdapter(getApplicationContext(),facesRecords);
         ListView listView = new ListView(this);
         listView.setAdapter(facesListAdapter);
         setContentView(listView);
     }
+
 }

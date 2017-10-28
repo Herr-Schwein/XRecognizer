@@ -29,9 +29,10 @@ public class FacesDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String state = "CREATE TABLE " + TABLE_NAME + " (id, name, leftEyeX, leftEyeY, " +
+        String state = "CREATE TABLE " + TABLE_NAME + " (id, name, ratioLeftEyesAndNose, ratioRightEyesAndNose, " +
+                "ratioLeftEyesBottomMouth, ratioRightEyesBottomMouth, ratioEyesAndNoseMouth, leftEyeX, leftEyeY, " +
                 "rightEyeX, rightEyeY, noseX, noseY, leftMouthX, leftMouthY, rightMouthX, " +
-                "rightMouthY, bottomMouthX, bottomMouthY, PRIMARY KEY(id, name)";
+                "rightMouthY, bottomMouthX, bottomMouthY, PRIMARY KEY(id, name))";
         System.out.println(state);
         sqLiteDatabase.execSQL(state);
     }
