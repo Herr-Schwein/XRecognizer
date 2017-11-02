@@ -21,6 +21,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.whoami.core.AbstractXRKNN;
+import com.example.whoami.core.XRKnnGeometry;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
@@ -43,6 +45,10 @@ public class MemorizeActivityFragment extends Fragment {
     private int left_eye_y=0;
     private int right_eye_x=0;
     private int right_eye_y=0;
+
+
+    AbstractXRKNN xRKnn = new XRKnnGeometry();
+//    AbstractXRKNN xRKnn = new XRKnnEuler();
 
     public MemorizeActivityFragment() {
     }
