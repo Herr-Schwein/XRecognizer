@@ -15,9 +15,11 @@ public class MemorizeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memorize);
-        bitmap = this.getIntent().getParcelableExtra("Bitmap");
-        imageView = findViewById(R.id.imageView);
-        imageView.setImageBitmap(bitmap);
+        if( this.getIntent().hasExtra("Bitmap") ) {
+            bitmap = this.getIntent().getParcelableExtra("Bitmap");
+            imageView = findViewById(R.id.imageView);
+            imageView.setImageBitmap(bitmap);
+        }
     }
 
 }

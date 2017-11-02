@@ -60,12 +60,12 @@ public class PickActivityFragment extends Fragment {
         if (requestCode == REQUEST_IMAGE_GET && resultCode == RESULT_OK ) {
             Uri selectedImage = data.getData();
             if (intent.getStringExtra("M").equals("ME")) { // Memorize
-                Intent intent = new Intent(getActivity(), MemorizeActivity.class).putExtra(Intent.EXTRA_TEXT, selectedImage.toString());
-                startActivity(intent);
+                Intent intent2 = new Intent(getActivity(), MemorizeActivity.class).putExtra(Intent.EXTRA_TEXT, selectedImage.toString());
+                startActivity(intent2);
             }
             else if (intent.getStringExtra("M").equals("RE")) { // Recognize
-                Intent intent = new Intent(getActivity(), RecognizeActivity.class).putExtra(Intent.EXTRA_TEXT, selectedImage.toString());
-                startActivity(intent);
+                Intent intent2 = new Intent(getActivity(), RecognizeActivity.class).putExtra(Intent.EXTRA_TEXT, selectedImage.toString());
+                startActivity(intent2);
             }
         } else if (requestCode == REQUEST_PICKTURE_TAKE && resultCode == RESULT_OK ) {
             if (intent.getStringExtra("M").equals("ME")) { // Memorize
@@ -74,7 +74,8 @@ public class PickActivityFragment extends Fragment {
                 startActivity(intent2);
             }
             else if (intent.getStringExtra("M").equals("RE")) { // Recognize
-                Intent intent2 = new Intent(getActivity(), RecognizeActivity.class).putExtras(data);
+                Bitmap bitmap = (Bitmap)data.getExtras().get("data");
+                Intent intent2 = new Intent(getActivity(), RecognizeActivity.class).putExtra("Bitmap",bitmap);
                 startActivity(intent2);
             }
         }
