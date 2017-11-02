@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.whoami.DAO.FacesDAOImpl;
 import com.example.whoami.DAO.IFacesDAO;
-import com.example.whoami.commonBean.Faces;
+import com.example.whoami.commonBean.FaceBean;
 
 import java.util.ArrayList;
 
@@ -43,21 +43,21 @@ public class FacesDBService extends SQLiteOpenHelper {
         //TODO nothing
     }
 
-    public ArrayList<Faces> selectAll(){
+    public ArrayList<FaceBean> selectAll(){
         db = this.getReadableDatabase();
-        ArrayList<Faces> facesRecords = iFacesDAO.selectAll(TABLE_NAME, db);
-        return facesRecords;
+        ArrayList<FaceBean> faceBeanRecords = iFacesDAO.selectAll(TABLE_NAME, db);
+        return faceBeanRecords;
     }
 
-    public void insert(Faces faces){
+    public void insert(FaceBean faceBean){
         db = this.getReadableDatabase();
         db = this.getWritableDatabase();
-        iFacesDAO.insert(TABLE_NAME, faces, db);
+        iFacesDAO.insert(TABLE_NAME, faceBean, db);
     }
 
-    public void update(Faces faces){
+    public void update(FaceBean faceBean){
         db = this.getReadableDatabase();
         db = this.getWritableDatabase();
-        iFacesDAO.update(TABLE_NAME, faces, db);
+        iFacesDAO.update(TABLE_NAME, faceBean, db);
     }
 }

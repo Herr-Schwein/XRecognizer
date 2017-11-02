@@ -1,6 +1,6 @@
 package com.example.whoami.core;
 
-import com.example.whoami.commonBean.Faces;
+import com.example.whoami.commonBean.FaceBean;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -16,17 +16,17 @@ public class XRKnnGeometry extends AbstractXRKNN{
     /**
      * Geometry based method
      * @param target
-     * @param faces
+     * @param faceBean
      * @return
      */
-    public BigDecimal calDistanceOfFaces(Faces target, Faces faces){
+    public BigDecimal calDistanceOfFaces(FaceBean target, FaceBean faceBean){
         BigDecimal dis = BigDecimal.valueOf(0);
         ArrayList<BigDecimal> tDist = new ArrayList<>();
         ArrayList<BigDecimal> fDist = new ArrayList<>();
         Double[] tx = target.get_X_Values();
         Double[] ty = target.get_Y_Values();
-        Double[] fx = faces.get_X_Values();
-        Double[] fy = faces.get_Y_Values();
+        Double[] fx = faceBean.get_X_Values();
+        Double[] fy = faceBean.get_Y_Values();
         for(int i = 0; i < tx.length - 1; i++){
             for( int j = i+1; j < tx.length; j++ ){
                 tDist.add(calDistance(tx[i], ty[i], tx[j], tx[j]));

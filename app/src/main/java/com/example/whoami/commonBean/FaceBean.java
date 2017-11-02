@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  * Created by dunhaozhong on 10/11/17.
  */
 
-public class Faces {
+public class FaceBean {
     private int id;
     private String name;
     private double leftEyeX = 0;
@@ -21,6 +21,14 @@ public class Faces {
     private double rightMouthY = 0;
     private double bottomMouthX = 0;
     private double bottomMouthY = 0;
+    private double leftEarTipX = 0;
+    private double leftEarTipY = 0;
+    private double rightEarTipX = 0;
+    private double rightEarTipY = 0;
+    private double leftCheekTipX = 0;
+    private double leftCheekTipY = 0;
+    private double rightCheekTipX = 0;
+    private double rightCheekTipY = 0;
     private BigDecimal ratioLeftEyesAndNose = new BigDecimal(0).setScale(4,BigDecimal.ROUND_HALF_UP);
     private BigDecimal ratioRightEyesAndNose = new BigDecimal(0).setScale(4,BigDecimal.ROUND_HALF_UP);
     private BigDecimal ratioLeftEyesBottomMouth = new BigDecimal(0).setScale(4,BigDecimal.ROUND_HALF_UP);
@@ -279,5 +287,69 @@ public class Faces {
 
     public void setRatioEyesAndNoseMouth(BigDecimal ratioEyesAndNoseMouth) {
         this.ratioEyesAndNoseMouth = ratioEyesAndNoseMouth;
+    }
+
+    public double getLeftEarTipX() {
+        return leftEarTipX;
+    }
+
+    public void setLeftEarTipX(double leftEarTipX) {
+        this.leftEarTipX = leftEarTipX;
+    }
+
+    public double getLeftEarTipY() {
+        return leftEarTipY;
+    }
+
+    public void setLeftEarTipY(double leftEarTipY) {
+        this.leftEarTipY = leftEarTipY;
+    }
+
+    public double getRightEarTipX() {
+        return rightEarTipX;
+    }
+
+    public void setRightEarTipX(double rightEarTipX) {
+        this.rightEarTipX = rightEarTipX;
+    }
+
+    public double getRightEarTipY() {
+        return rightEarTipY;
+    }
+
+    public void setRightEarTipY(double rightEarTipY) {
+        this.rightEarTipY = rightEarTipY;
+    }
+
+    public double getLeftCheekTipX() {
+        return leftCheekTipX;
+    }
+
+    public void setLeftCheekTipX(double leftCheekTipX) {
+        this.leftCheekTipX = leftCheekTipX;
+    }
+
+    public double getLeftCheekTipY() {
+        return leftCheekTipY;
+    }
+
+    public void setLeftCheekTipY(double leftCheekTipY) {
+        this.leftCheekTipY = leftCheekTipY;
+    }
+
+    public double getRightCheekTipX() {
+        return rightCheekTipX;
+    }
+
+    public void setRightCheekTipX(double rightCheekTipX) {
+        this.rightCheekTipX = rightCheekTipX;
+    }
+
+    public double getRightCheekTipY() {
+        return rightCheekTipY;
+    }
+
+    public void setRightCheekTipY(double rightCheekTipY) {
+        this.rightCheekTipY = rightCheekTipY;
     }
 }

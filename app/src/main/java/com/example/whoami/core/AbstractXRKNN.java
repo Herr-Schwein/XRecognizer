@@ -1,6 +1,6 @@
 package com.example.whoami.core;
 
-import com.example.whoami.commonBean.Faces;
+import com.example.whoami.commonBean.FaceBean;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,14 +19,14 @@ public abstract class AbstractXRKNN {
      * @param recordFaces
      * @return
      */
-    public String calNearestFaces(int k, Faces target, ArrayList<Faces> recordFaces){
+    public String calNearestFaces(int k, FaceBean target, ArrayList<FaceBean> recordFaces){
         BigDecimal result = new BigDecimal(Double.MAX_VALUE).setScale(4,BigDecimal.ROUND_HALF_UP);
         String resName = target.getName();
-        for(Faces faces : recordFaces){
-            BigDecimal dis = calDistanceOfFaces(target, faces);
+        for(FaceBean faceBean : recordFaces){
+            BigDecimal dis = calDistanceOfFaces(target, faceBean);
             if(dis.compareTo(result) < 0) {
                 result = dis;
-                resName = faces.getName();
+                resName = faceBean.getName();
             }
         }
         return resName;
@@ -34,11 +34,11 @@ public abstract class AbstractXRKNN {
 
     /**
      * Calculate Eulerian distance
-     * @param faces1
-     * @param faces2
+     * @param faceBean1
+     * @param faceBean2
      * @return
      */
-    abstract protected BigDecimal calDistanceOfFaces(Faces faces1, Faces faces2);
+    abstract protected BigDecimal calDistanceOfFaces(FaceBean faceBean1, FaceBean faceBean2);
 
     protected BigDecimal calRatio(BigDecimal dis1, BigDecimal dis2){
         return dis1.divide(dis2,4,BigDecimal.ROUND_HALF_UP);

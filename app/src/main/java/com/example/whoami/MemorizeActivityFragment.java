@@ -23,6 +23,7 @@ import android.widget.ImageView;
 
 import com.example.whoami.core.AbstractXRKNN;
 import com.example.whoami.core.XRKnnGeometry;
+import com.example.whoami.service.FaceDetectorService;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
@@ -46,16 +47,20 @@ public class MemorizeActivityFragment extends Fragment {
     private int right_eye_x=0;
     private int right_eye_y=0;
 
-
+    FaceDetectorService faceDetectorService;
     AbstractXRKNN xRKnn = new XRKnnGeometry();
 //    AbstractXRKNN xRKnn = new XRKnnEuler();
 
     public MemorizeActivityFragment() {
+        this.faceDetectorService = new FaceDetectorService(getActivity(), paint, canvas);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Frame frame = null;
+
         View rootView = inflater.inflate(R.layout.fragment_memorize, container, false);
         ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
 
@@ -78,21 +83,9 @@ public class MemorizeActivityFragment extends Fragment {
             canvas = new Canvas(bitmap);
             canvas.drawBitmap(bitmap,0,0,null);
 
-            FaceDetector faceDetector = new FaceDetector.Builder(getActivity().getApplicationContext())
-                    .setTrackingEnabled(false)
-                    .setLandmarkType(FaceDetector.ALL_LANDMARKS)
-                    .setMode(FaceDetector.ACCURATE_MODE)
-                    .build();
 
+            frame = new Frame.Builder().setBitmap(bitmap).build();
 
-            Frame frame = new Frame.Builder().setBitmap(bitmap).build();
-            SparseArray<Face> sparseArray = faceDetector.detect(frame);
-
-            for(int i = 0; i < sparseArray.size(); i++){
-                Face face = sparseArray.valueAt(i);
-                detectLandmarks(face);
-                //drawRecOnFaceView(face);
-            }
         }
 
         imageView.setImageBitmap(bitmap);
@@ -121,50 +114,11 @@ public class MemorizeActivityFragment extends Fragment {
                 builder.show();
             }
         });
+
+        faceDetectorService.saveNewFace(name, frame);
         return rootView;
     }
 
-    private void detectLandmarks(Face face) {
-        paint.setColor(Color.GREEN);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(1f);
-        for(Landmark landmark : face.getLandmarks()){
-            int cx = (int)(landmark.getPosition().x);
-            int cy = (int)(landmark.getPosition().y);
-            switch(landmark.getType()){
-                case Landmark.BOTTOM_MOUTH:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-                case Landmark.LEFT_EYE:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-                case Landmark.RIGHT_EYE:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-                case Landmark.NOSE_BASE:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-                case Landmark.LEFT_MOUTH:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-                case Landmark.RIGHT_MOUTH:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-                case Landmark.LEFT_EAR_TIP:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-                case Landmark.RIGHT_EAR_TIP:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-                case Landmark.LEFT_CHEEK:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-                case Landmark.RIGHT_CHEEK:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-            }
-        }
-    }
 
     private void drawRecOnFaceView(Face face) {
         paint.setColor(Color.GREEN);

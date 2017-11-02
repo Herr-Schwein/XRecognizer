@@ -2,7 +2,7 @@ package com.example.whoami.DAO;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.whoami.commonBean.Faces;
+import com.example.whoami.commonBean.FaceBean;
 
 import java.util.ArrayList;
 
@@ -13,9 +13,9 @@ import java.util.ArrayList;
 
 public interface IFacesDAO {
 
-    public void insert(String TABLE_NAME, Faces faces, SQLiteDatabase db);
+    public void insert(String TABLE_NAME, FaceBean faceBean, SQLiteDatabase db);
 
-    public void update(String TABLE_NAME, Faces faces, SQLiteDatabase db);
+    public void update(String TABLE_NAME, FaceBean faceBean, SQLiteDatabase db);
 
-    public ArrayList<Faces> selectAll(String TABLE_NAME, SQLiteDatabase db);
+    public ArrayList<FaceBean> selectAll(String TABLE_NAME, SQLiteDatabase db);
 }
