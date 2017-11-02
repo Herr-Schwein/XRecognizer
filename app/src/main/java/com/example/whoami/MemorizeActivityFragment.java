@@ -1,4 +1,4 @@
-package uottawa.xrecognizer;
+package com.example.whoami;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;

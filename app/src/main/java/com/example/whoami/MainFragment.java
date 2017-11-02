@@ -1,4 +1,4 @@
-package uottawa.xrecognizer;
+package com.example.whoami;
 
 import android.content.Intent;
 import android.os.Bundle;
