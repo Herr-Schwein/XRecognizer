@@ -1,5 +1,6 @@
 package com.example.whoami.service;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -7,6 +8,8 @@ import android.support.v4.app.FragmentActivity;
 import android.util.SparseArray;
 
 import com.example.whoami.commonBean.FaceBean;
+import com.example.whoami.core.AbstractXRKNN;
+import com.example.whoami.core.XRKnnGeometry;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
@@ -27,6 +30,9 @@ public class FaceDetectorService {
     Paint paint;
     Canvas canvas;
 
+    private AbstractXRKNN xRKnn = new XRKnnGeometry();
+//    AbstractXRKNN xRKnn = new XRKnnEuler();
+
     public FaceDetectorService(FragmentActivity fragmentActivity, Paint paint, Canvas canvas){
         this.faceDetector = new FaceDetector.Builder(fragmentActivity.getApplicationContext())
                 .setTrackingEnabled(false)
@@ -46,6 +52,21 @@ public class FaceDetectorService {
             facesDBService.insert(detectLandmarks(face, name));
             //drawRecOnFaceView(face);
         }
+    }
+
+    public String identifyFace(Frame frame){
+        SparseArray<Face> sparseArray = deteceFace(frame);
+        String res = "";
+        for(int i = 0; i < sparseArray.size(); i++) {
+            Face face = sparseArray.valueAt(i);
+            FaceBean faceBean = detectLandmarks(face, "");
+            res = xRKnn.calNearestFaces(1, faceBean, queryRecordFaces());
+        }
+        return res;
+    }
+
+    private ArrayList<FaceBean> queryRecordFaces(){
+        return facesDBService.selectAll();
     }
 
     private SparseArray<Face>  deteceFace(Frame frame){
