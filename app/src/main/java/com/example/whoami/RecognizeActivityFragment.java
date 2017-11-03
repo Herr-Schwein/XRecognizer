@@ -1,5 +1,7 @@
 package com.example.whoami;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.whoami.service.FaceDetectorService;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
@@ -32,8 +35,11 @@ public class RecognizeActivityFragment extends Fragment {
 
     private Bitmap bitmap = null;
     private Canvas canvas = null;
+    private Frame frame = null;
     private Paint paint = new Paint();
     private final float RIDUS = 2;
+
+    FaceDetectorService faceDetectorService;
 
     public RecognizeActivityFragment() {
     }
@@ -63,84 +69,39 @@ public class RecognizeActivityFragment extends Fragment {
             canvas = new Canvas(bitmap);
             canvas.drawBitmap(bitmap,0,0,null);
 
-            FaceDetector faceDetector = new FaceDetector.Builder(getActivity().getApplicationContext())
-                    .setTrackingEnabled(false)
-                    .setLandmarkType(FaceDetector.ALL_LANDMARKS)
-                    .setMode(FaceDetector.ACCURATE_MODE)
-                    .build();
-
-
-            Frame frame = new Frame.Builder().setBitmap(bitmap).build();
-            SparseArray<Face> sparseArray = faceDetector.detect(frame);
-
-            for(int i = 0; i < sparseArray.size(); i++){
-                Face face = sparseArray.valueAt(i);
-                detectLandmarks(face);
-                //drawRecOnFaceView(face);
-            }
+            frame = new Frame.Builder().setBitmap(bitmap).build();
         }
 
         imageView.setImageBitmap(bitmap);
 
-        Button recognize = (Button) rootView.findViewById(R.id.recognize);
+        this.faceDetectorService = new FaceDetectorService(getActivity(), paint, canvas);
+
+        Button recognize = rootView.findViewById(R.id.recognize);
         recognize.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                // do recogition
+                String res = faceDetectorService.identifyFace(frame);
 
-
-
-
-
-
-
-
+                AlertDialog.Builder showResDialog = new AlertDialog.Builder(getActivity());
+                showResDialog.setTitle("I guess you are: ");
+                showResDialog.setMessage(res);
+                showResDialog.setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {dialog.cancel();}
+                        });
+                showResDialog.setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {dialog.cancel();}
+                        });
+                showResDialog.show();
 
             }
         });
         return rootView;
     }
 
-    private void detectLandmarks(Face face) {
-        paint.setColor(Color.GREEN);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(1f);
-        for(Landmark landmark : face.getLandmarks()){
-            int cx = (int)(landmark.getPosition().x);
-            int cy = (int)(landmark.getPosition().y);
-            switch(landmark.getType()){
-                case Landmark.BOTTOM_MOUTH:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-                case Landmark.LEFT_EYE:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-                case Landmark.RIGHT_EYE:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-                case Landmark.NOSE_BASE:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-                case Landmark.LEFT_MOUTH:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-                case Landmark.RIGHT_MOUTH:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-                case Landmark.LEFT_EAR_TIP:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-                case Landmark.RIGHT_EAR_TIP:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-                case Landmark.LEFT_CHEEK:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-                case Landmark.RIGHT_CHEEK:
-                    canvas.drawCircle(cx,cy,RIDUS,paint);
-                    break;
-            }
-        }
-    }
 
     private void drawRecOnFaceView(Face face) {
         paint.setColor(Color.GREEN);
