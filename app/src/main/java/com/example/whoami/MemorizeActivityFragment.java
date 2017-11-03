@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,24 +43,20 @@ public class MemorizeActivityFragment extends Fragment {
     private Paint paint = new Paint();
     private final float RIDUS = 2;
     private String name = "";
+    private Frame frame = null;
     private int left_eye_x=0;
     private int left_eye_y=0;
     private int right_eye_x=0;
     private int right_eye_y=0;
 
     FaceDetectorService faceDetectorService;
-    AbstractXRKNN xRKnn = new XRKnnGeometry();
-//    AbstractXRKNN xRKnn = new XRKnnEuler();
 
     public MemorizeActivityFragment() {
-        this.faceDetectorService = new FaceDetectorService(getActivity(), paint, canvas);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        Frame frame = null;
 
         View rootView = inflater.inflate(R.layout.fragment_memorize, container, false);
         ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
@@ -83,14 +80,15 @@ public class MemorizeActivityFragment extends Fragment {
             canvas = new Canvas(bitmap);
             canvas.drawBitmap(bitmap,0,0,null);
 
-
             frame = new Frame.Builder().setBitmap(bitmap).build();
 
         }
 
+        this.faceDetectorService = new FaceDetectorService(getActivity(), paint, canvas);
+
         imageView.setImageBitmap(bitmap);
 
-        Button memorize = (Button) rootView.findViewById(R.id.memorize);
+        Button memorize = rootView.findViewById(R.id.memorize);
         memorize.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -102,6 +100,8 @@ public class MemorizeActivityFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         name = input.getText().toString();
+                        Log.d("Test", name);
+                        faceDetectorService.saveNewFace(name, frame);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -115,7 +115,6 @@ public class MemorizeActivityFragment extends Fragment {
             }
         });
 
-        faceDetectorService.saveNewFace(name, frame);
         return rootView;
     }
 
