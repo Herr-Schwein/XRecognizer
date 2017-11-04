@@ -29,113 +29,37 @@ public class FaceBean {
     private double leftCheekTipY = 0;
     private double rightCheekTipX = 0;
     private double rightCheekTipY = 0;
-    private BigDecimal ratioLeftEyesAndNose = new BigDecimal(0).setScale(4,BigDecimal.ROUND_HALF_UP);
-    private BigDecimal ratioRightEyesAndNose = new BigDecimal(0).setScale(4,BigDecimal.ROUND_HALF_UP);
-    private BigDecimal ratioLeftEyesBottomMouth = new BigDecimal(0).setScale(4,BigDecimal.ROUND_HALF_UP);
-    private BigDecimal ratioRightEyesBottomMouth = new BigDecimal(0).setScale(4,BigDecimal.ROUND_HALF_UP);
-    private BigDecimal ratioEyesAndNoseMouth = new BigDecimal(0).setScale(4,BigDecimal.ROUND_HALF_UP);
 
-    /**
-     * result = distance of eyes / distance of left eye to nose
-     * @return
-     */
-    public void calRatioLeftEyesAndNose() {
-        BigDecimal disEyes = new BigDecimal(Math.sqrt(Math.pow(rightEyeX - leftEyeX, 2) + Math.pow(rightEyeY - rightEyeY, 2)))
-                .setScale(4,BigDecimal.ROUND_HALF_UP);
-        BigDecimal disLeftEyeNose = new BigDecimal(Math.sqrt(Math.pow(leftEyeX - noseX, 2) + Math.pow(leftEyeY - noseY, 2)))
-                .setScale(4,BigDecimal.ROUND_HALF_UP);
-        if (disLeftEyeNose.equals(0)) {
-            ratioLeftEyesAndNose = BigDecimal.valueOf(-1);
-        } else {
-            ratioLeftEyesAndNose = disEyes.divide(disLeftEyeNose,4, BigDecimal.ROUND_HALF_UP);
-        }
+    public double[] getALL_X(){
+        double [] x = new double[10];
+        x[0] = leftEyeX;
+        x[1] = rightEyeX;
+        x[2] = noseX;
+        x[3] = leftMouthX;
+        x[4] = rightMouthX;
+        x[5] = bottomMouthX;
+        x[6] = leftEarTipX;
+        x[7] = rightEarTipX;
+        x[8] = leftCheekTipX;
+        x[9] = rightCheekTipX;
+        return x;
     }
 
-    /**
-     * result = distance of eyes / distance of right eye to nose
-     * @return
-     */
-    public void calRatioRightEyesAndNose(){
-        BigDecimal disEyes = new BigDecimal(Math.sqrt( Math.pow(rightEyeX - leftEyeX, 2) + Math.pow(rightEyeY - rightEyeY, 2) ))
-                .setScale(4,BigDecimal.ROUND_HALF_UP);
-        BigDecimal disRightEyeNose = new BigDecimal(Math.sqrt( Math.pow(rightEyeX - noseX, 2) + Math.pow(rightEyeY - noseY, 2)))
-                .setScale(4,BigDecimal.ROUND_HALF_UP);
-        if(disRightEyeNose.equals(0)){
-            ratioRightEyesAndNose = BigDecimal.valueOf(-1);
-        } else {
-            ratioRightEyesAndNose = disEyes.divide(disRightEyeNose,4, BigDecimal.ROUND_HALF_UP);
-        }
+    public double[] getALL_Y(){
+        double [] y = new double[10];
+        y[0] = leftEyeY;
+        y[1] = rightEyeY;
+        y[2] = noseY;
+        y[3] = leftMouthY;
+        y[4] = rightMouthY;
+        y[5] = bottomMouthY;
+        y[6] = leftEarTipY;
+        y[7] = rightEarTipY;
+        y[8] = leftCheekTipY;
+        y[9] = rightCheekTipY;
+        return y;
     }
 
-    /**
-     * result = distance of eyes / distance of left eye to BottomMouth
-     * @return
-     */
-    public void calRatioLeftEyesBottomMouth(){
-        BigDecimal disEyes = new BigDecimal(Math.sqrt( Math.pow(rightEyeX - leftEyeX, 2) + Math.pow(rightEyeY - rightEyeY, 2) ))
-                .setScale(4,BigDecimal.ROUND_HALF_UP);
-        BigDecimal disLeftEyeBottomMouth = new BigDecimal(Math.sqrt( Math.pow(leftEyeX - bottomMouthX, 2) + Math.pow(leftEyeY - bottomMouthY, 2)))
-                .setScale(4,BigDecimal.ROUND_HALF_UP);
-        if(disLeftEyeBottomMouth.equals(0)){
-            ratioLeftEyesBottomMouth = BigDecimal.valueOf(-1);
-        } else {
-            ratioLeftEyesBottomMouth = disEyes.divide(disLeftEyeBottomMouth,4, BigDecimal.ROUND_HALF_UP);
-        }
-    }
-
-    /**
-     * result = distance of eyes / distance of left eye to nose
-     * @return
-     */
-    public void calRatioRightEyesBottomMouth(){
-        BigDecimal disEyes = new BigDecimal(Math.sqrt( Math.pow(rightEyeX - leftEyeX, 2) + Math.pow(rightEyeY - rightEyeY, 2) ))
-                .setScale(4,BigDecimal.ROUND_HALF_UP);
-        BigDecimal disLeftEyeNose = new BigDecimal(Math.sqrt( Math.pow(leftEyeX - bottomMouthX, 2) + Math.pow(leftEyeY - bottomMouthY, 2)))
-                .setScale(4,BigDecimal.ROUND_HALF_UP);
-        if(disLeftEyeNose.equals(0)){
-            ratioRightEyesBottomMouth = BigDecimal.valueOf(-1);
-        } else {
-            ratioRightEyesBottomMouth = disEyes.divide(disLeftEyeNose,4, BigDecimal.ROUND_HALF_UP);
-        }
-    }
-
-    /**
-     * result = distance of eyes / distance of bottom mouth to nose
-     * @return
-     */
-    public void calRatioEyesAndNoseBottomMouth(){
-        BigDecimal disEyes = new BigDecimal(Math.sqrt( Math.pow(rightEyeX - leftEyeX, 2) + Math.pow(rightEyeY - rightEyeY, 2) ))
-                .setScale(4,BigDecimal.ROUND_HALF_UP);
-        BigDecimal disNoseMouth = new BigDecimal(Math.sqrt( Math.pow(noseX - bottomMouthX, 2) + Math.pow(noseY - bottomMouthY, 2)))
-                .setScale(4,BigDecimal.ROUND_HALF_UP);
-        if(disNoseMouth.equals(0)){
-            ratioEyesAndNoseMouth = BigDecimal.valueOf(-1);
-        } else {
-            ratioEyesAndNoseMouth = disEyes.divide(disNoseMouth,4, BigDecimal.ROUND_HALF_UP);
-        }
-    }
-
-    public Double[] get_X_Values(){
-        Double[] res = new Double[6];
-        res[0] = leftEyeX;
-        res[1] = rightEyeX;
-        res[2] = noseX;
-        res[3] = leftMouthX;
-        res[4] = rightMouthX;
-        res[5] = bottomMouthX;
-        return res;
-    }
-
-    public Double[] get_Y_Values(){
-        Double[] res = new Double[6];
-        res[0] = leftEyeY;
-        res[1] = rightEyeY;
-        res[2] = noseY;
-        res[3] = leftMouthY;
-        res[4] = rightMouthY;
-        res[5] = bottomMouthY;
-        return res;
-    }
 
     public int getId() {
         return id;
@@ -247,46 +171,6 @@ public class FaceBean {
 
     public void setBottomMouthY(double bottomMouthY) {
         this.bottomMouthY = bottomMouthY;
-    }
-
-    public BigDecimal getRatioLeftEyesAndNose() {
-        return ratioLeftEyesAndNose;
-    }
-
-    public void setRatioLeftEyesAndNose(BigDecimal ratioLeftEyesAndNose) {
-        this.ratioLeftEyesAndNose = ratioLeftEyesAndNose;
-    }
-
-    public BigDecimal getRatioRightEyesAndNose() {
-        return ratioRightEyesAndNose;
-    }
-
-    public void setRatioRightEyesAndNose(BigDecimal ratioRightEyesAndNose) {
-        this.ratioRightEyesAndNose = ratioRightEyesAndNose;
-    }
-
-    public BigDecimal getRatioLeftEyesBottomMouth() {
-        return ratioLeftEyesBottomMouth;
-    }
-
-    public void setRatioLeftEyesBottomMouth(BigDecimal ratioLeftEyesBottomMouth) {
-        this.ratioLeftEyesBottomMouth = ratioLeftEyesBottomMouth;
-    }
-
-    public BigDecimal getRatioRightEyesBottomMouth() {
-        return ratioRightEyesBottomMouth;
-    }
-
-    public void setRatioRightEyesBottomMouth(BigDecimal ratioRightEyesBottomMouth) {
-        this.ratioRightEyesBottomMouth = ratioRightEyesBottomMouth;
-    }
-
-    public BigDecimal getRatioEyesAndNoseMouth() {
-        return ratioEyesAndNoseMouth;
-    }
-
-    public void setRatioEyesAndNoseMouth(BigDecimal ratioEyesAndNoseMouth) {
-        this.ratioEyesAndNoseMouth = ratioEyesAndNoseMouth;
     }
 
     public double getLeftEarTipX() {

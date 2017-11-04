@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public interface IFacesDAO {
 
-    public void insert(String TABLE_NAME, FaceBean faceBean, SQLiteDatabase db);
+    public long insert(String TABLE_NAME, FaceBean faceBean, SQLiteDatabase db);
 
     public void update(String TABLE_NAME, FaceBean faceBean, SQLiteDatabase db);
 

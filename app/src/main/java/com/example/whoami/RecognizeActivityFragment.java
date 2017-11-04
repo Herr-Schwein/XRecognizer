@@ -51,7 +51,7 @@ public class RecognizeActivityFragment extends Fragment {
         ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
 
         Intent intent = getActivity().getIntent();
-        if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
+        if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT )) {
             String selectImage = intent.getStringExtra(Intent.EXTRA_TEXT);
             InputStream imageStream = null;
             Uri uri = Uri.parse(selectImage);
@@ -69,8 +69,13 @@ public class RecognizeActivityFragment extends Fragment {
             canvas = new Canvas(bitmap);
             canvas.drawBitmap(bitmap,0,0,null);
 
-            frame = new Frame.Builder().setBitmap(bitmap).build();
+        }else if(intent != null && intent.hasExtra("Bitmap")) {
+            bitmap = intent.getParcelableExtra("Bitmap");
+            canvas = new Canvas(bitmap);
+            canvas.drawBitmap(bitmap,0,0,null);
         }
+
+        frame = new Frame.Builder().setBitmap(bitmap).build();
 
         imageView.setImageBitmap(bitmap);
 
@@ -83,7 +88,7 @@ public class RecognizeActivityFragment extends Fragment {
                 String res = faceDetectorService.identifyFace(frame);
 
                 AlertDialog.Builder showResDialog = new AlertDialog.Builder(getActivity());
-                showResDialog.setTitle("I guess you are: ");
+                showResDialog.setTitle("Your name: ");
                 showResDialog.setMessage(res);
                 showResDialog.setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {

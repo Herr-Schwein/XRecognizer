@@ -1,8 +1,12 @@
 package com.example.whoami.core;
 
+import android.util.Log;
+
 import com.example.whoami.commonBean.FaceBean;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 
 /**
@@ -18,14 +22,29 @@ public class XRKnnEuler extends AbstractXRKNN{
      * @return
      */
     public BigDecimal calDistanceOfFaces(FaceBean faceBean1, FaceBean faceBean2){
-        return BigDecimal.valueOf(
-                Math.sqrt(
-                        Math.pow(faceBean1.getRatioEyesAndNoseMouth().doubleValue() - faceBean2.getRatioEyesAndNoseMouth().doubleValue(), 2)
-                                + Math.pow(faceBean1.getRatioLeftEyesAndNose().doubleValue() - faceBean2.getRatioLeftEyesAndNose().doubleValue(), 2)
-                                + Math.pow(faceBean1.getRatioLeftEyesBottomMouth().doubleValue() - faceBean2.getRatioLeftEyesBottomMouth().doubleValue(), 2)
-                                + Math.pow(faceBean1.getRatioRightEyesAndNose().doubleValue() - faceBean2.getRatioRightEyesAndNose().doubleValue(), 2)
-                                + Math.pow(faceBean1.getRatioRightEyesBottomMouth().doubleValue() - faceBean2.getRatioRightEyesBottomMouth().doubleValue(), 2)
-                )
-        ).setScale(4,BigDecimal.ROUND_HALF_UP);
+
+        // faceBean1 distances
+        ArrayList<BigDecimal> dis1 = calAllDistances(faceBean1);
+        ArrayList<BigDecimal> ratio1 = new ArrayList<>();
+
+        // faceBean2 distances
+        ArrayList<BigDecimal> dis2 = calAllDistances(faceBean2);
+        ArrayList<BigDecimal> ratio2 = new ArrayList<>();
+
+        for( int i = 0; i < dis1.size() - 1; i++ ){
+            for( int j = i + 1; j < dis1.size(); j++ ) {
+                ratio1.add(calRatio(dis1.get(i), dis1.get(i + 1)));
+                ratio2.add(calRatio(dis2.get(i), dis2.get(i + 1)));
+            }
+        }
+
+        BigDecimal val = new BigDecimal(0).setScale(9,BigDecimal.ROUND_HALF_UP);
+        for(int i = 0; i < ratio1.size(); i++){
+            val = val.add( (ratio1.get(i).subtract(ratio2.get(i))).pow(2) );
+        }
+
+        return BigDecimal.valueOf(Math.sqrt(val.doubleValue())).setScale(4, BigDecimal.ROUND_HALF_UP);
     }
+
+
 }

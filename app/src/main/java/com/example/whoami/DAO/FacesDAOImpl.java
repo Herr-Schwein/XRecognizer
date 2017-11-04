@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.whoami.commonBean.FaceBean;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -18,16 +17,11 @@ import java.util.UUID;
 public class FacesDAOImpl implements IFacesDAO {
 
     @Override
-    public void insert(String TABLE_NAME, FaceBean faceBean, SQLiteDatabase db) {
+    public long insert(String TABLE_NAME, FaceBean faceBean, SQLiteDatabase db) {
         ContentValues cv = new ContentValues();
         String uuid = UUID.randomUUID().toString();
         cv.put("id", uuid);
         cv.put("name", faceBean.getName());
-        cv.put("ratioLeftEyesAndNose", faceBean.getRatioLeftEyesAndNose().toString());
-        cv.put("ratioRightEyesAndNose", faceBean.getRatioRightEyesAndNose().toString());
-        cv.put("ratioLeftEyesBottomMouth", faceBean.getRatioLeftEyesBottomMouth().toString());
-        cv.put("ratioRightEyesBottomMouth", faceBean.getRatioRightEyesBottomMouth().toString());
-        cv.put("ratioEyesAndNoseMouth", faceBean.getRatioEyesAndNoseMouth().toString());
         cv.put("leftEyeX", faceBean.getLeftEyeX());
         cv.put("leftEyeY", faceBean.getLeftEyeX());
         cv.put("rightEyeX", faceBean.getRightEyeX());
@@ -40,8 +34,16 @@ public class FacesDAOImpl implements IFacesDAO {
         cv.put("rightMouthY", faceBean.getRightMouthY());
         cv.put("bottomMouthX", faceBean.getBottomMouthX());
         cv.put("bottomMouthY", faceBean.getBottomMouthY());
+        cv.put("leftEarTipX", faceBean.getLeftEarTipX());
+        cv.put("leftEarTipY", faceBean.getLeftEarTipY());
+        cv.put("rightEarTipX", faceBean.getRightEarTipX());
+        cv.put("rightEarTipY", faceBean.getRightEarTipY());
+        cv.put("leftCheekTipX", faceBean.getLeftCheekTipX());
+        cv.put("leftCheekTipY", faceBean.getLeftCheekTipY());
+        cv.put("rightCheekTipX", faceBean.getRightCheekTipX());
+        cv.put("rightCheekTipY", faceBean.getRightCheekTipY());
         long row = db.insert(TABLE_NAME, null, cv);
-        return;
+        return row;
     }
 
     @Override
@@ -64,23 +66,26 @@ public class FacesDAOImpl implements IFacesDAO {
             FaceBean faceBean = new FaceBean();
             faceBean.setId(cursor.getInt(cursor.getColumnIndex("id")));
             faceBean.setName(cursor.getString(cursor.getColumnIndex("name")));
-            faceBean.setRatioEyesAndNoseMouth(new BigDecimal(cursor.getString(cursor.getColumnIndex("ratioEyesAndNoseMouth"))));
-            faceBean.setRatioLeftEyesAndNose(new BigDecimal(cursor.getString(cursor.getColumnIndex("ratioLeftEyesAndNose"))));
-            faceBean.setRatioRightEyesAndNose(new BigDecimal(cursor.getString(cursor.getColumnIndex("ratioRightEyesAndNose"))));
-            faceBean.setRatioLeftEyesBottomMouth(new BigDecimal(cursor.getString(cursor.getColumnIndex("ratioLeftEyesBottomMouth"))));
-            faceBean.setRatioRightEyesBottomMouth(new BigDecimal(cursor.getString(cursor.getColumnIndex("ratioRightEyesBottomMouth"))));
             faceBean.setLeftEyeY(cursor.getFloat(cursor.getColumnIndex("leftEyeX")));
             faceBean.setLeftEyeY(cursor.getFloat(cursor.getColumnIndex("leftEyeY")));
             faceBean.setRightEyeX(cursor.getFloat(cursor.getColumnIndex("rightEyeX")));
             faceBean.setRightEyeY(cursor.getFloat(cursor.getColumnIndex("rightEyeY")));
             faceBean.setNoseX(cursor.getFloat(cursor.getColumnIndex("noseX")));
             faceBean.setNoseY(cursor.getFloat(cursor.getColumnIndex("noseY")));
-            faceBean.setBottomMouthX(cursor.getFloat(cursor.getColumnIndex("bottomMouthX")));
-            faceBean.setBottomMouthY(cursor.getFloat(cursor.getColumnIndex("bottomMouthY")));
             faceBean.setLeftMouthX(cursor.getFloat(cursor.getColumnIndex("leftMouthX")));
             faceBean.setLeftMouthY(cursor.getFloat(cursor.getColumnIndex("leftMouthY")));
             faceBean.setRightMouthX(cursor.getFloat(cursor.getColumnIndex("rightMouthX")));
             faceBean.setRightMouthY(cursor.getFloat(cursor.getColumnIndex("rightMouthY")));
+            faceBean.setBottomMouthX(cursor.getFloat(cursor.getColumnIndex("bottomMouthX")));
+            faceBean.setBottomMouthY(cursor.getFloat(cursor.getColumnIndex("bottomMouthY")));
+            faceBean.setLeftEarTipX(cursor.getFloat(cursor.getColumnIndex("leftEarTipX")));
+            faceBean.setLeftEarTipY(cursor.getFloat(cursor.getColumnIndex("leftEarTipY")));
+            faceBean.setRightEarTipX(cursor.getFloat(cursor.getColumnIndex("rightEarTipX")));
+            faceBean.setRightEarTipY(cursor.getFloat(cursor.getColumnIndex("rightEarTipY")));
+            faceBean.setLeftCheekTipX(cursor.getFloat(cursor.getColumnIndex("leftCheekTipX")));
+            faceBean.setLeftCheekTipY(cursor.getFloat(cursor.getColumnIndex("leftCheekTipY")));
+            faceBean.setRightCheekTipX(cursor.getFloat(cursor.getColumnIndex("rightCheekTipX")));
+            faceBean.setRightCheekTipY(cursor.getFloat(cursor.getColumnIndex("rightCheekTipY")));
             faceBeanList.add(faceBean);
             cursor.moveToNext();
         }
