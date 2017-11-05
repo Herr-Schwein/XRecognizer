@@ -4,12 +4,8 @@ import android.util.Log;
 
 import com.example.whoami.commonBean.FaceBean;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 /**
@@ -48,6 +44,12 @@ public abstract class AbstractXRKNN {
      */
     abstract protected BigDecimal calDistanceOfFaces(FaceBean faceBean1, FaceBean faceBean2);
 
+    /**
+     * dis2 cannot be 0
+     * @param dis1
+     * @param dis2
+     * @return
+     */
     protected BigDecimal calRatio(BigDecimal dis1, BigDecimal dis2){
         return dis1.divide(dis2,9,BigDecimal.ROUND_HALF_UP);
     }
@@ -57,17 +59,14 @@ public abstract class AbstractXRKNN {
 
         double[] Xs = faceBean.getALL_X();
         double[] Ys = faceBean.getALL_Y();
-        BigDecimal total = new BigDecimal(0);
 
+        //Do not use data of left and right ears
         for(int i = 0; i < Xs.length-1; i++){
             for( int j = i + 1; j < Xs.length; j++ ){
                 BigDecimal dis = calItemDistance(Xs[i], Ys[i], Xs[j], Ys[j]);
                 res.add(dis);
-                total = total.add(dis);
             }
         }
-
-        res = scaleDistance(res, total);
         return res;
     }
 
@@ -78,19 +77,4 @@ public abstract class AbstractXRKNN {
                 )
         ).setScale(9, BigDecimal.ROUND_HALF_UP);
     }
-
-    protected ArrayList<BigDecimal> scaleDistance(ArrayList<BigDecimal> value, BigDecimal total){
-        ArrayList<BigDecimal> res = new ArrayList<>();
-        int n = value.size();
-        BigDecimal ave = total.divide(BigDecimal.valueOf(n), 9, BigDecimal.ROUND_HALF_UP);
-
-        for(BigDecimal item : value ){
-            item = item.subtract(ave);
-            item = item.divide(ave, 9, BigDecimal.ROUND_HALF_UP);
-            res.add(item);
-        }
-        return res;
-    }
-
-
 }
