@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by ZDH on 10/18/17.
  */
 
-public class KnnEuler extends AbstractGeometryBased {
+public class KnnEuclidean extends AbstractGeometryBased {
 
     /**
      * Geometry based method
