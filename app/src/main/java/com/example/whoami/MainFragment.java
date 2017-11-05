@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class MainFragment extends Fragment {
 
 
-
+    FacesDBService facesDBService;
 
     public MainFragment() {
         // Required empty public constructor
@@ -58,9 +58,9 @@ public class MainFragment extends Fragment {
         Button dataManager = (Button) rootView.findViewById(R.id.browse);
         dataManager.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                FacesDBService facesDBService = new FacesDBService(getActivity());
+                facesDBService = new FacesDBService(getActivity());
                 ArrayList<FaceBean> faceBeanRecords = facesDBService.selectAll();
-                String[] items = new String[faceBeanRecords.size()];
+                final String[] items = new String[faceBeanRecords.size()];
 
                 for(int i = 0; i < items.length; i++){
                     items[i] = faceBeanRecords.get(i).getName();
@@ -70,7 +70,21 @@ public class MainFragment extends Fragment {
                 showListDialog.setTitle("I know these faces: ");
                 showListDialog.setItems(items, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onClick(DialogInterface dialogInterface, final int i) {
+                        AlertDialog.Builder showResDialog = new AlertDialog.Builder(getActivity());
+                        showResDialog.setTitle("Delete this name?");
+                        showResDialog.setPositiveButton("Ok",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        facesDBService.delete(items[i]);}
+                                });
+                        showResDialog.setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {dialog.dismiss();}
+                                });
+                        showResDialog.show();
 //                        Toast.makeText(getActivity(), "You clicked "+Items[i], Toast.LENGTH_SHORT).show();
                     }
                 });
