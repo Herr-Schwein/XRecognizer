@@ -13,9 +13,11 @@ import java.util.ArrayList;
 
 public interface IFacesDAO {
 
-    public long insert(String TABLE_NAME, FaceBean faceBean, SQLiteDatabase db);
+    long insert(String TABLE_NAME, FaceBean faceBean, SQLiteDatabase db);
 
-    public void update(String TABLE_NAME, FaceBean faceBean, SQLiteDatabase db);
+    void update(String TABLE_NAME, FaceBean faceBean, SQLiteDatabase db);
 
-    public ArrayList<FaceBean> selectAll(String TABLE_NAME, SQLiteDatabase db);
+    void delete( String TABLE_NAME, String name, SQLiteDatabase db );
+
+    ArrayList<FaceBean> selectAll(String TABLE_NAME, SQLiteDatabase db);
 }

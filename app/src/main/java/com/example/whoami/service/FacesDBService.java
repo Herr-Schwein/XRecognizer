@@ -61,4 +61,10 @@ public class FacesDBService extends SQLiteOpenHelper {
         db = this.getWritableDatabase();
         iFacesDAO.update(TABLE_NAME, faceBean, db);
     }
+
+    public void delete(String name){
+        db = this.getReadableDatabase();
+        db = this.getWritableDatabase();
+        iFacesDAO.delete(TABLE_NAME, name, db);
+    }
 }

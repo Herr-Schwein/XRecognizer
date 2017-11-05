@@ -91,4 +91,11 @@ public class FacesDAOImpl implements IFacesDAO {
         }
         return faceBeanList;
     }
+
+    @Override
+    public void delete( String TABLE_NAME, String name, SQLiteDatabase db ){
+        String where = "name=?";
+        String[] whereValue = {name};
+        db.delete(TABLE_NAME, where, whereValue);
+    }
 }
