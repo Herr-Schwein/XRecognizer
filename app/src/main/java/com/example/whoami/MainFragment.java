@@ -1,5 +1,7 @@
 package com.example.whoami;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.example.whoami.commonBean.FaceBean;
+import com.example.whoami.service.FacesDBService;
+
+import java.util.ArrayList;
 
 
 public class MainFragment extends Fragment {
@@ -44,6 +52,29 @@ public class MainFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), PickActivity.class).putExtra("M", "RE");
                 startActivity(intent);
+            }
+        });
+
+        Button dataManager = (Button) rootView.findViewById(R.id.browse);
+        dataManager.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                FacesDBService facesDBService = new FacesDBService(getActivity());
+                ArrayList<FaceBean> faceBeanRecords = facesDBService.selectAll();
+                String[] items = new String[faceBeanRecords.size()];
+
+                for(int i = 0; i < items.length; i++){
+                    items[i] = faceBeanRecords.get(i).getName();
+                }
+
+                AlertDialog.Builder showListDialog = new AlertDialog.Builder(getActivity());
+                showListDialog.setTitle("I know these faces: ");
+                showListDialog.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        Toast.makeText(getActivity(), "You clicked "+Items[i], Toast.LENGTH_SHORT).show();
+                    }
+                });
+                showListDialog.show();
             }
         });
 
