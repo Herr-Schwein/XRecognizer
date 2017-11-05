@@ -8,7 +8,7 @@ import android.util.SparseArray;
 
 import com.example.whoami.commonBean.FaceBean;
 import com.example.whoami.core.AbstractGeometryBased;
-import com.example.whoami.core.KnnEuler;
+import com.example.whoami.core.KnnEuclidean;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
@@ -30,7 +30,7 @@ public class FaceDetectorService {
     Canvas canvas;
 
 //    private AbstractGeometryBased xRKnn = new MinRatioGap();
-    private AbstractGeometryBased xRKnn = new KnnEuler();
+    private AbstractGeometryBased xRKnn = new KnnEuclidean();
 
     public FaceDetectorService(FragmentActivity fragmentActivity, Paint paint, Canvas canvas){
         this.faceDetector = new FaceDetector.Builder(fragmentActivity.getApplicationContext())
