@@ -16,7 +16,7 @@
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:text="MEMORIZE"
+        android:text="ADD NEW"
         android:background="@android:color/holo_green_dark"
         android:textColor="@android:color/white"
         android:textSize="40sp"/>
@@ -44,7 +44,7 @@
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:text="BROWSE DATABASE"
+        android:text="BROWSE"
         android:background="@android:color/holo_orange_dark"
         android:textColor="@android:color/white"
         android:textSize="40sp"/>
