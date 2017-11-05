@@ -21,14 +21,14 @@ public class FaceBean {
     private double rightMouthY = 0;
     private double bottomMouthX = 0;
     private double bottomMouthY = 0;
-    private double leftEarTipX = 0;
-    private double leftEarTipY = 0;
-    private double rightEarTipX = 0;
-    private double rightEarTipY = 0;
     private double leftCheekTipX = 0;
     private double leftCheekTipY = 0;
     private double rightCheekTipX = 0;
     private double rightCheekTipY = 0;
+    private double leftEarTipX = 0;
+    private double leftEarTipY = 0;
+    private double rightEarTipX = 0;
+    private double rightEarTipY = 0;
 
     public double[] getALL_X(){
         double [] x = new double[10];
@@ -38,10 +38,10 @@ public class FaceBean {
         x[3] = leftMouthX;
         x[4] = rightMouthX;
         x[5] = bottomMouthX;
-        x[6] = leftEarTipX;
-        x[7] = rightEarTipX;
-        x[8] = leftCheekTipX;
-        x[9] = rightCheekTipX;
+        x[6] = leftCheekTipX;
+        x[7] = rightCheekTipX;
+        x[8] = leftEarTipX;
+        x[9] = rightEarTipX;
         return x;
     }
 
@@ -53,10 +53,10 @@ public class FaceBean {
         y[3] = leftMouthY;
         y[4] = rightMouthY;
         y[5] = bottomMouthY;
-        y[6] = leftEarTipY;
-        y[7] = rightEarTipY;
-        y[8] = leftCheekTipY;
-        y[9] = rightCheekTipY;
+        y[6] = leftCheekTipY;
+        y[7] = rightCheekTipY;
+        y[8] = leftEarTipY;
+        y[9] = rightEarTipY;
         return y;
     }
 
