@@ -1,17 +1,14 @@
 package com.example.whoami.service;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.util.SparseArray;
 
 import com.example.whoami.commonBean.FaceBean;
-import com.example.whoami.core.AbstractXRKNN;
-import com.example.whoami.core.XRKnnEuler;
-import com.example.whoami.core.XRKnnGeometry;
+import com.example.whoami.core.AbstractGeometryBased;
+import com.example.whoami.core.KnnEuler;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
@@ -32,8 +29,8 @@ public class FaceDetectorService {
     Paint paint;
     Canvas canvas;
 
-//    private AbstractXRKNN xRKnn = new XRKnnGeometry();
-    private AbstractXRKNN xRKnn = new XRKnnEuler();
+//    private AbstractGeometryBased xRKnn = new MinRatioGap();
+    private AbstractGeometryBased xRKnn = new KnnEuler();
 
     public FaceDetectorService(FragmentActivity fragmentActivity, Paint paint, Canvas canvas){
         this.faceDetector = new FaceDetector.Builder(fragmentActivity.getApplicationContext())

@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by ZDH on 10/18/17.
  */
 
-public class XRKnnGeometry extends AbstractXRKNN{
+public class MinRatioGap extends AbstractGeometryBased {
 
 
     /**

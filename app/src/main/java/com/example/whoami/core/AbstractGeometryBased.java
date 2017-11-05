@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by ZDH on 10/18/17.
  */
 
-public abstract class AbstractXRKNN {
+public abstract class AbstractGeometryBased {
 
     /**
      * Using KNN to get nearest faces
@@ -30,7 +30,6 @@ public abstract class AbstractXRKNN {
             if(dis.compareTo(result) < 0) {
                 result = dis;
                 resName = faceBean.getName();
-                Log.d("result:------->>> ",result.toString());
             }
         }
         return resName;

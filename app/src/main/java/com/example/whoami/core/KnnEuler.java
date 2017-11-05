@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.example.whoami.commonBean.FaceBean;
 
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
@@ -13,7 +12,7 @@ import java.util.ArrayList;
  * Created by ZDH on 10/18/17.
  */
 
-public class XRKnnEuler extends AbstractXRKNN{
+public class KnnEuler extends AbstractGeometryBased {
 
     /**
      * Geometry based method
