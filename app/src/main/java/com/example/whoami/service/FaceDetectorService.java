@@ -8,7 +8,7 @@ import android.util.SparseArray;
 
 import com.example.whoami.commonBean.FaceBean;
 import com.example.whoami.core.AbstractGeometryBased;
-import com.example.whoami.core.KnnEuclidean;
+import com.example.whoami.core.MinRatioGap;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
@@ -29,8 +29,8 @@ public class FaceDetectorService {
     Paint paint;
     Canvas canvas;
 
-//    private AbstractGeometryBased xRKnn = new MinRatioGap();
-    private AbstractGeometryBased xRKnn = new KnnEuclidean();
+    private AbstractGeometryBased identifyCore = new MinRatioGap();
+//    private AbstractGeometryBased identifyCore = new KnnEuclidean();
 
     public FaceDetectorService(FragmentActivity fragmentActivity, Paint paint, Canvas canvas){
         this.faceDetector = new FaceDetector.Builder(fragmentActivity.getApplicationContext())
@@ -60,7 +60,7 @@ public class FaceDetectorService {
         for(int i = 0; i < sparseArray.size(); i++) {
             Face face = sparseArray.valueAt(i);
             FaceBean faceBean = detectLandmarks(face, "");
-            res = xRKnn.calNearestFaces(1, faceBean, faceBeansList);
+            res = identifyCore.calNearestFaces(1, faceBean, faceBeansList);
         }
         return res;
     }
