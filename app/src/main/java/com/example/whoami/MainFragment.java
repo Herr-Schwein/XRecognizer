@@ -77,7 +77,9 @@ public class MainFragment extends Fragment {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        facesDBService.delete(items[i]);}
+                                        facesDBService.delete(items[i]);
+                                        Toast.makeText(getActivity(), "Delete " + items[i] + " successfully!", Toast.LENGTH_LONG).show();
+                                    }
                                 });
                         showResDialog.setNegativeButton("Cancel",
                                 new DialogInterface.OnClickListener() {

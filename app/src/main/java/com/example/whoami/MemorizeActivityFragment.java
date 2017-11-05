@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.whoami.service.FaceDetectorService;
 import com.google.android.gms.vision.Frame;
@@ -100,6 +101,7 @@ public class MemorizeActivityFragment extends Fragment {
                         name = input.getText().toString();
                         Log.d("Test", name);
                         faceDetectorService.saveNewFace(name, frame);
+                        Toast.makeText(getActivity(), "Add " + name + " successfully!", Toast.LENGTH_LONG).show();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
