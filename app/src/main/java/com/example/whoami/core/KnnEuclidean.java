@@ -48,8 +48,8 @@ public class KnnEuclidean extends AbstractGeometryBased {
 
         BigDecimal val = new BigDecimal(0).setScale(9,BigDecimal.ROUND_HALF_UP);
         for(int i = 0; i < ratio1.size(); i++){
-            Log.i("ratio1:", ratio1.get(i).toString());
-            Log.i("ratio2:", ratio2.get(i).toString());
+//            Log.i("ratio1:", ratio1.get(i).toString());
+//            Log.i("ratio2:", ratio2.get(i).toString());
             val = val.add( (ratio1.get(i).subtract(ratio2.get(i))).pow(2) );
         }
 
