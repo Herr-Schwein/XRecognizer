@@ -24,10 +24,18 @@ public abstract class AbstractGeometryBased {
     public String calNearestFaces(int k, FaceBean target, ArrayList<FaceBean> recordFaces){
         BigDecimal result = new BigDecimal(Double.MAX_VALUE).setScale(4,BigDecimal.ROUND_HALF_UP);
         String resName = target.getName();
+        Log.i("Target left eye",String.valueOf(target.getLeftEyeX()) + " " + String.valueOf(target.getLeftEyeY()));
+        Log.i("Target right eye",String.valueOf(target.getRightEyeX()) + " " + String.valueOf(target.getRightEyeY()));
+        Log.i("Target nose",String.valueOf(target.getNoseX()) + " " + String.valueOf(target.getNoseY()));
+        Log.i("Target bottom mouth",String.valueOf(target.getBottomMouthX()) + " " + String.valueOf(target.getBottomMouthY()));
         for(FaceBean faceBean : recordFaces){
+            Log.i(faceBean.getName() + " left eye",String.valueOf(faceBean.getLeftEyeX()) + " " + String.valueOf(faceBean.getLeftEyeY()));
+            Log.i(faceBean.getName() + " right eye",String.valueOf(faceBean.getRightEyeX()) + " " + String.valueOf(faceBean.getRightEyeY()));
+            Log.i(faceBean.getName() + " nose",String.valueOf(faceBean.getNoseX()) + " " + String.valueOf(faceBean.getNoseY()));
+            Log.i(faceBean.getName() + " bottom mouth",String.valueOf(faceBean.getBottomMouthX()) + " " + String.valueOf(faceBean.getBottomMouthY()));
             BigDecimal dis = calDistanceOfFaces(target, faceBean);
-            Log.d("Distance to "+faceBean.getName()+": ", dis.toString());
-            if(dis.compareTo(result) < 0) {
+            Log.i("Distance to "+faceBean.getName()+": ", dis.toString());
+            if(dis.compareTo(result) <= 0) {
                 result = dis;
                 resName = faceBean.getName();
             }
@@ -58,6 +66,7 @@ public abstract class AbstractGeometryBased {
 
         double[] Xs = faceBean.getALL_X();
         double[] Ys = faceBean.getALL_Y();
+
 
         //Do not use data of left and right ears
         for(int i = 0; i < Xs.length-1; i++){
