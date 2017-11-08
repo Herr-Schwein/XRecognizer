@@ -35,9 +35,9 @@ public class FaceBean {
         x[0] = leftEyeX;
         x[1] = rightEyeX;
         x[2] = noseX;
-        x[3] = leftMouthX;
-        x[4] = rightMouthX;
-        x[5] = bottomMouthX;
+        x[3] = bottomMouthX;
+        x[4] = leftMouthX;
+        x[5] = rightMouthX;
         x[6] = leftCheekTipX;
         x[7] = rightCheekTipX;
         x[8] = leftEarTipX;
@@ -50,9 +50,9 @@ public class FaceBean {
         y[0] = leftEyeY;
         y[1] = rightEyeY;
         y[2] = noseY;
-        y[3] = leftMouthY;
-        y[4] = rightMouthY;
-        y[5] = bottomMouthY;
+        y[3] = bottomMouthY;
+        y[4] = leftMouthY;
+        y[5] = rightMouthY;
         y[6] = leftCheekTipY;
         y[7] = rightCheekTipY;
         y[8] = leftEarTipY;
