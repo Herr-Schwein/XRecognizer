@@ -38,23 +38,30 @@ public class MinRatioGap extends AbstractGeometryBased {
                         || dis1.get(j).doubleValue() == 0 || dis2.get(j).doubleValue() == 0 ){
                     continue;
                 }
-                ratio1.add(calRatio(dis1.get(i), dis1.get(j)));
-                ratio2.add(calRatio(dis2.get(i), dis2.get(j)));
+                if(dis1.get(i).compareTo(dis1.get(j)) >= 0) {
+                    ratio1.add(calRatio(dis1.get(i), dis1.get(j)));
+                    ratio2.add(calRatio(dis2.get(i), dis2.get(j)));
+                }
             }
         }
 
         //Normalize the ratios to [-1, 1]
-        ratio1 = Normalization.normalize(ratio1, 0);
-        ratio2 = Normalization.normalize(ratio2, 0);
+        ratio1 = Normalization.normalize(ratio1, 1);
+        ratio2 = Normalization.normalize(ratio2, 1);
 
         BigDecimal val = BigDecimal.valueOf(0).setScale(9,BigDecimal.ROUND_HALF_UP);
+
         for(int i = 0; i < ratio1.size(); i++){
-            BigDecimal gap = ratio1.get(i).subtract(ratio2.get(i));
-            BigDecimal mean = ratio1.get(i).add(ratio2.get(i)).divide(BigDecimal.valueOf(2),9, BigDecimal.ROUND_HALF_UP);
-            val = val.add( (gap.divide(mean,9, BigDecimal.ROUND_HALF_UP)).pow(2) );
-//            Log.d("Ratio1 ", ratio1.get(i).toString());
-//            Log.d("Ratio2 ", ratio2.get(i).toString());
-//            Log.d("val: ",  val.toString());
+//          Log.d("Ratio1 ", ratio1.get(i).toString());
+//          Log.d("Ratio2 ", ratio2.get(i).toString());
+
+            if(ratio1.get(i).doubleValue() != 0 && ratio2.get(i).doubleValue() != 0) {
+                BigDecimal gap = ratio1.get(i).subtract(ratio2.get(i));
+                BigDecimal mean = ratio1.get(i).add(ratio2.get(i));
+                mean = mean.divide(BigDecimal.valueOf(2), 9, BigDecimal.ROUND_HALF_UP);
+                val = val.add((gap.divide(mean, 9, BigDecimal.ROUND_HALF_UP)).pow(2));
+//              Log.d("val: ",  val.toString());
+            }
         }
 
         return BigDecimal.valueOf(Math.sqrt(val.doubleValue())).setScale(4, BigDecimal.ROUND_HALF_UP);
