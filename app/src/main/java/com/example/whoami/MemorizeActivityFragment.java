@@ -99,7 +99,6 @@ public class MemorizeActivityFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         name = input.getText().toString();
-                        Log.d("Test", name);
                         faceDetectorService.saveNewFace(name, frame);
                         Toast.makeText(getActivity(), "Add " + name + " successfully!", Toast.LENGTH_LONG).show();
                     }
