@@ -47,6 +47,7 @@ public class FacesDBService extends SQLiteOpenHelper {
     public ArrayList<FaceBean> selectAll(){
         db = this.getReadableDatabase();
         ArrayList<FaceBean> faceBeanRecords = iFacesDAO.selectAll(TABLE_NAME, db);
+        db.close();
         return faceBeanRecords;
     }
 
@@ -54,17 +55,20 @@ public class FacesDBService extends SQLiteOpenHelper {
         db = this.getReadableDatabase();
         db = this.getWritableDatabase();
         iFacesDAO.insert(TABLE_NAME, faceBean, db);
+        db.close();
     }
 
     public void update(FaceBean faceBean){
         db = this.getReadableDatabase();
         db = this.getWritableDatabase();
         iFacesDAO.update(TABLE_NAME, faceBean, db);
+        db.close();
     }
 
     public void delete(String name){
         db = this.getReadableDatabase();
         db = this.getWritableDatabase();
         iFacesDAO.delete(TABLE_NAME, name, db);
+        db.close();
     }
 }
