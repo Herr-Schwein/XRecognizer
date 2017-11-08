@@ -70,9 +70,9 @@ public class Normalization {
 
         BigDecimal gap = maxValue.subtract(minValue);
 
-        Log.d("maxDis: ",  maxValue.toString());
-        Log.d("minDis: ",  minValue.toString());
-        Log.d("gap: ",  gap.toString());
+//        Log.d("maxDis: ",  maxValue.toString());
+//        Log.d("minDis: ",  minValue.toString());
+//        Log.d("gap: ",  gap.toString());
         for(BigDecimal item : value ){
             item = item.subtract(minValue);
             item = item.divide(gap, 9, BigDecimal.ROUND_HALF_UP);
