@@ -31,8 +31,8 @@ public class FaceDetectorService {
     Paint paint;
     Canvas canvas;
 
-//    private AbstractGeometryBased identifyCore = new MinRatioGap();
-    private AbstractGeometryBased identifyCore = new KnnEuclidean();
+    private AbstractGeometryBased identifyCore = new MinRatioGap();
+//    private AbstractGeometryBased identifyCore = new KnnEuclidean();
 
     public FaceDetectorService(FragmentActivity fragmentActivity, Paint paint, Canvas canvas){
         this.faceDetector = new FaceDetector.Builder(fragmentActivity.getApplicationContext())
