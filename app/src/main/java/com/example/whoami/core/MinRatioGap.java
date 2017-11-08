@@ -43,15 +43,20 @@ public class MinRatioGap extends AbstractGeometryBased {
             }
         }
 
-        BigDecimal val = BigDecimal.valueOf(0).setScale(9,BigDecimal.ROUND_HALF_UP);
+        //Normalize the ratios to [-1, 1]
+        ratio1 = Normalization.normalize(ratio1, 0);
+        ratio2 = Normalization.normalize(ratio2, 0);
 
+        BigDecimal val = BigDecimal.valueOf(0).setScale(9,BigDecimal.ROUND_HALF_UP);
         for(int i = 0; i < ratio1.size(); i++){
-            val = val.add( calRatio(ratio1.get(i), ratio2.get(i)) );
-            Log.d("Ratio1 ", ratio1.get(i).toString());
-            Log.d("Ratio2 ", ratio2.get(i).toString());
-            Log.d("val: ",  val.toString());
+            BigDecimal gap = ratio1.get(i).subtract(ratio2.get(i));
+            BigDecimal mean = ratio1.get(i).add(ratio2.get(i)).divide(BigDecimal.valueOf(2),9, BigDecimal.ROUND_HALF_UP);
+            val = val.add( (gap.divide(mean,9, BigDecimal.ROUND_HALF_UP)).pow(2) );
+//            Log.d("Ratio1 ", ratio1.get(i).toString());
+//            Log.d("Ratio2 ", ratio2.get(i).toString());
+//            Log.d("val: ",  val.toString());
         }
 
-        return val;
+        return BigDecimal.valueOf(Math.sqrt(val.doubleValue())).setScale(4, BigDecimal.ROUND_HALF_UP);
     }
 }
