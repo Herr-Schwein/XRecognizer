@@ -23,13 +23,13 @@ public class FacesDAOImpl implements IFacesDAO {
         cv.put("id", uuid);
         cv.put("name", faceBean.getName());
         cv.put("leftEyeX", faceBean.getLeftEyeX());
-        cv.put("leftEyeY", faceBean.getLeftEyeX());
+        cv.put("leftEyeY", faceBean.getLeftEyeY());
         cv.put("rightEyeX", faceBean.getRightEyeX());
         cv.put("rightEyeY", faceBean.getRightEyeY());
         cv.put("noseX", faceBean.getNoseX());
         cv.put("noseY", faceBean.getNoseY());
         cv.put("leftMouthX", faceBean.getLeftMouthX());
-        cv.put("leftMouthY", faceBean.getLeftMouthX());
+        cv.put("leftMouthY", faceBean.getLeftMouthY());
         cv.put("rightMouthX", faceBean.getRightMouthX());
         cv.put("rightMouthY", faceBean.getRightMouthY());
         cv.put("bottomMouthX", faceBean.getBottomMouthX());
@@ -66,7 +66,7 @@ public class FacesDAOImpl implements IFacesDAO {
             FaceBean faceBean = new FaceBean();
             faceBean.setId(cursor.getInt(cursor.getColumnIndex("id")));
             faceBean.setName(cursor.getString(cursor.getColumnIndex("name")));
-            faceBean.setLeftEyeY(cursor.getFloat(cursor.getColumnIndex("leftEyeX")));
+            faceBean.setLeftEyeX(cursor.getFloat(cursor.getColumnIndex("leftEyeX")));
             faceBean.setLeftEyeY(cursor.getFloat(cursor.getColumnIndex("leftEyeY")));
             faceBean.setRightEyeX(cursor.getFloat(cursor.getColumnIndex("rightEyeX")));
             faceBean.setRightEyeY(cursor.getFloat(cursor.getColumnIndex("rightEyeY")));
