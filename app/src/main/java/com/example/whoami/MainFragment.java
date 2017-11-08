@@ -61,35 +61,47 @@ public class MainFragment extends Fragment {
                 facesDBService = new FacesDBService(getActivity());
                 ArrayList<FaceBean> faceBeanRecords = facesDBService.selectAll();
                 final String[] items = new String[faceBeanRecords.size()];
+                final Boolean[] initChoiceSets = new Boolean[faceBeanRecords.size()];
 
                 for(int i = 0; i < items.length; i++){
                     items[i] = faceBeanRecords.get(i).getName();
                 }
 
                 AlertDialog.Builder showListDialog = new AlertDialog.Builder(getActivity());
+                final ArrayList<String> yourChoices = new ArrayList<>();
                 showListDialog.setTitle("I know these faces: ");
-                showListDialog.setItems(items, new DialogInterface.OnClickListener() {
+                showListDialog.setMultiChoiceItems(items, null, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, final int i) {
-                        AlertDialog.Builder showResDialog = new AlertDialog.Builder(getActivity());
-                        showResDialog.setTitle("Delete this name?");
-                        showResDialog.setPositiveButton("Ok",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        facesDBService.delete(items[i]);
-                                        Toast.makeText(getActivity(), "Delete " + items[i] + " successfully!", Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                        showResDialog.setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {dialog.dismiss();}
-                                });
-                        showResDialog.show();
-//                        Toast.makeText(getActivity(), "You clicked "+Items[i], Toast.LENGTH_SHORT).show();
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (isChecked) {
+                            yourChoices.add(items[which]);
+                        }else {
+                            yourChoices.remove(items[which]);
+                        }
+
                     }
                 });
+                showListDialog.setPositiveButton("Delete",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if(yourChoices.size()<=0){
+                                    Toast.makeText(getActivity(), "Please select at least one face!", Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+                                for(String name : yourChoices){
+                                    facesDBService.delete(name);
+                                }
+                                Toast.makeText(getActivity(), "Delete successfully!", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                showListDialog.setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
                 showListDialog.show();
             }
         });
