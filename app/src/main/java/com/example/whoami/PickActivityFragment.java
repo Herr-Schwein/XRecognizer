@@ -1,15 +1,25 @@
+/*
+Depeloper: XUEJING MA
+DATE:2017 Fall Term, Multimedia Communication
+ */
 package com.example.whoami;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import java.io.File;
+import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -22,7 +32,8 @@ public class PickActivityFragment extends Fragment {
     private static final int REQUEST_IMAGE_GET = 1;
     private static final int REQUEST_PICKTURE_TAKE = 2;
     private Intent intent = null;
-
+    private String mCurrentPhotoPath;
+    private Uri photoURI;
 
 
     public PickActivityFragment() {
@@ -38,7 +49,25 @@ public class PickActivityFragment extends Fragment {
             public void onClick(View v) {
                 // take a photo
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, REQUEST_PICKTURE_TAKE);
+//                startActivityForResult(intent, REQUEST_PICKTURE_TAKE);
+                File photoFile = null;
+                try {
+                    File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                    File image = File.createTempFile(
+                            "image",  /* prefix */
+                            ".jpg",         /* suffix */
+                            storageDir      /* directory */
+                    );
+                    mCurrentPhotoPath = image.getAbsolutePath();
+                    photoFile = image;
+                } catch (IOException ex) { }
+                // Continue only if the File was successfully created
+                if (photoFile != null) {
+                    photoURI = FileProvider.getUriForFile(getActivity(),"com.example.android.fileprovider",
+                            photoFile);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(intent, REQUEST_PICKTURE_TAKE);
+                }
             }
         });
         Button gallery = (Button) rootView.findViewById(R.id.gallery);
@@ -68,15 +97,27 @@ public class PickActivityFragment extends Fragment {
             }
         } else if (requestCode == REQUEST_PICKTURE_TAKE && resultCode == RESULT_OK ) {
             if (intent.getStringExtra("M").equals("ME")) { // Memorize
-                Bitmap bitmap = (Bitmap)data.getExtras().get("data");
-                Intent intent2 = new Intent(getActivity(), MemorizeActivity.class).putExtra("Bitmap",bitmap);
+//                Bitmap bitmap = (Bitmap)data.getExtras().get("data");
+//                Intent intent2 = new Intent(getActivity(), MemorizeActivity.class).putExtra("Bitmap",bitmap);
+                Intent intent2 = new Intent(getActivity(), MemorizeActivity.class).putExtra(Intent.EXTRA_TEXT, photoURI.toString());
                 startActivity(intent2);
             }
             else if (intent.getStringExtra("M").equals("RE")) { // Recognize
-                Bitmap bitmap = (Bitmap)data.getExtras().get("data");
-                Intent intent2 = new Intent(getActivity(), RecognizeActivity.class).putExtra("Bitmap",bitmap);
+//                Bitmap bitmap = (Bitmap)data.getExtras().get("data");
+//                Bitmap bitmap = BitmapFactory.decodeFile(Environment.DIRECTORY_PICTURES+"/image.jpg");
+//                Intent intent2 = new Intent(getActivity(), RecognizeActivity.class).putExtra("Bitmap",bitmap);
+                Intent intent2 = new Intent(getActivity(), RecognizeActivity.class).putExtra(Intent.EXTRA_TEXT, photoURI.toString());
                 startActivity(intent2);
             }
         }
     }
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(mCurrentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        getActivity().sendBroadcast(mediaScanIntent);
+    }
+
 }
