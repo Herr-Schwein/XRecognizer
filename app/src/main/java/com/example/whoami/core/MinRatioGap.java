@@ -64,6 +64,7 @@ public class MinRatioGap extends AbstractGeometryBased {
             }
         }
 
-        return BigDecimal.valueOf(Math.sqrt(val.doubleValue())).setScale(4, BigDecimal.ROUND_HALF_UP);
+//        return BigDecimal.valueOf(Math.sqrt(val.doubleValue())).setScale(4, BigDecimal.ROUND_HALF_UP);
+        return BigDecimal.valueOf(val.doubleValue()).setScale(4, BigDecimal.ROUND_HALF_UP);
     }
 }
