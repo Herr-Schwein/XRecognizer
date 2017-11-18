@@ -1,3 +1,7 @@
+/*
+Depeloper: DUNHAO ZHONG
+DATE:2017 Fall Term, Multimedia Communication
+ */
 package com.example.whoami.service;
 
 import android.graphics.Canvas;

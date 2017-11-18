@@ -1,3 +1,7 @@
+/*
+Depeloper: XUEJING MA
+DATE:2017 Fall Term, Multimedia Communication
+ */
 package com.example.whoami;
 
 import android.support.v7.app.AppCompatActivity;

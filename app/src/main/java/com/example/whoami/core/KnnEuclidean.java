@@ -1,3 +1,7 @@
+/*
+Depeloper: XUEJING MA, DUNHAO ZHONG
+DATE:2017 Fall Term, Multimedia Communication
+ */
 package com.example.whoami.core;
 
 import android.util.Log;

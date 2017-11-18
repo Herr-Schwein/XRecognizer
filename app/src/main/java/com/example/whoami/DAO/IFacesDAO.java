@@ -1,3 +1,7 @@
+/*
+Depeloper: DUNHAO ZHONG
+DATE:2017 Fall Term, Multimedia Communication
+ */
 package com.example.whoami.DAO;
 
 import android.database.sqlite.SQLiteDatabase;
