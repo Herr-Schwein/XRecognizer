@@ -80,7 +80,8 @@ public class FaceDetectorService {
 
         paint.setColor(Color.GREEN);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(1f);
+        paint.setStrokeWidth((int)(face.getWidth()*0.01));
+        Log.d("StrokeWidth: ",  String.valueOf(face.getWidth()));
         for(Landmark landmark : face.getLandmarks()){
             int cx = (int)(landmark.getPosition().x);
             int cy = (int)(landmark.getPosition().y);
