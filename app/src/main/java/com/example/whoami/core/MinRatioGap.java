@@ -1,3 +1,7 @@
+/*
+Depeloper: XUEJING MA, DUNHAO ZHONG
+DATE:2017 Fall Term, Multimedia Communication
+ */
 package com.example.whoami.core;
 
 import android.util.Log;
@@ -57,9 +61,9 @@ public class MinRatioGap extends AbstractGeometryBased {
 
             if(ratio1.get(i).doubleValue() != 0 && ratio2.get(i).doubleValue() != 0) {
                 BigDecimal gap = ratio1.get(i).subtract(ratio2.get(i));
-                BigDecimal mean = ratio1.get(i).add(ratio2.get(i));
-                mean = mean.divide(BigDecimal.valueOf(2), 9, BigDecimal.ROUND_HALF_UP);
-                val = val.add((gap.divide(mean, 9, BigDecimal.ROUND_HALF_UP)).pow(2));
+//                BigDecimal mean = ratio1.get(i).add(ratio2.get(i));
+//                mean = mean.divide(BigDecimal.valueOf(2), 9, BigDecimal.ROUND_HALF_UP);
+                val = val.add((gap.divide(ratio1.get(i), 9, BigDecimal.ROUND_HALF_UP)).pow(2));
 //              Log.d("val: ",  val.toString());
             }
         }
