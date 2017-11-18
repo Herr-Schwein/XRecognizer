@@ -1,3 +1,9 @@
+/*
+Depeloper: XUEJING MA
+DATE:2017 Fall Term, Multimedia Communication
+ */
+
+
 package com.example.whoami;
 
 import android.app.AlertDialog;
@@ -84,8 +90,12 @@ public class RecognizeActivityFragment extends Fragment {
                // do recogition
                 String res = faceDetectorService.identifyFace(frame);
 
+                if(res.equals("")){
+                    res = "Sorry, no match!";
+                }
+
                 AlertDialog.Builder showResDialog = new AlertDialog.Builder(getActivity());
-                showResDialog.setTitle("Your name: ");
+                showResDialog.setTitle("Best guess in database is: ");
                 showResDialog.setMessage(res);
                 showResDialog.setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {

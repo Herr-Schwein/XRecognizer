@@ -1,3 +1,7 @@
+/*
+Depeloper: XUEJING MA, DUNHAO ZHONG
+DATE:2017 Fall Term, Multimedia Communication
+ */
 package com.example.whoami.core;
 
 import android.util.Log;
@@ -39,6 +43,9 @@ public abstract class AbstractGeometryBased {
                 result = dis;
                 resName = faceBean.getName();
             }
+        }
+        if(result.compareTo(BigDecimal.valueOf(4000)) > 0){
+            return "";
         }
         return resName;
     }
